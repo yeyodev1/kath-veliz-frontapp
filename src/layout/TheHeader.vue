@@ -1,44 +1,75 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { site } from '@/config/site'
-import { useUserStore } from '@/stores/user'
-import { useBodyScroll } from '@/composables/useBodyScroll'
+import { useSiteNav } from '@/composables/useSiteNav'
+import HeaderDrawer from './HeaderDrawer.vue'
 
 const route = useRoute()
-const userStore = useUserStore()
-const mobileOpen = ref(false)
+const { links, userLinks, userStore } = useSiteNav()
 
-useBodyScroll(mobileOpen)
+const drawerOpen = ref(false)
+const scrolled = ref(false)
 
-// Al navegar se cierra el menú móvil.
-watch(() => route.fullPath, () => (mobileOpen.value = false))
+// Al navegar se cierra el drawer.
+watch(
+  () => route.fullPath,
+  () => (drawerOpen.value = false),
+)
+
+function onScroll() {
+  scrolled.value = window.scrollY > 8
+}
+
+onMounted(() => {
+  onScroll()
+  window.addEventListener('scroll', onScroll, { passive: true })
+})
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
-  <header class="header">
+  <header class="header" :class="{ 'header--scrolled': scrolled }">
     <div class="header__inner">
-      <RouterLink to="/" class="header__logo">{{ site.name }}</RouterLink>
+      <RouterLink to="/" class="header__logo" :aria-label="`${site.name}, inicio`">
+        <img :src="site.logo.full" :alt="site.logo.alt" width="107" height="60" />
+      </RouterLink>
 
-      <nav class="header__nav" :class="{ 'header__nav--open': mobileOpen }">
-        <RouterLink v-for="link in site.nav" :key="link.to" :to="link.to" class="header__link">
+      <nav class="header__nav" aria-label="Principal">
+        <RouterLink v-for="link in links" :key="link.to" :to="link.to" class="header__link">
           {{ link.label }}
         </RouterLink>
-        <RouterLink v-if="userStore.isAuthenticated" to="/cuenta" class="header__link">
-          Mi cuenta
-        </RouterLink>
-        <RouterLink v-else to="/login" class="btn btn--primary header__cta">Ingresar</RouterLink>
       </nav>
 
+      <div class="header__user">
+        <template v-if="userStore.isAuthenticated">
+          <RouterLink
+            v-for="link in userLinks"
+            :key="link.to"
+            :to="link.to"
+            class="header__link header__link--user"
+          >
+            <i :class="link.icon" aria-hidden="true"></i> {{ link.label }}
+          </RouterLink>
+        </template>
+        <RouterLink v-else to="/login" class="btn btn--primary header__cta">
+          {{ site.navUser.login }}
+        </RouterLink>
+      </div>
+
       <button
+        type="button"
         class="header__burger"
-        :aria-label="mobileOpen ? 'Cerrar menú' : 'Abrir menú'"
-        :aria-expanded="mobileOpen"
-        @click="mobileOpen = !mobileOpen"
+        :aria-label="site.navUser.openMenu"
+        aria-haspopup="dialog"
+        :aria-expanded="drawerOpen"
+        @click="drawerOpen = true"
       >
-        <i :class="mobileOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+        <span></span><span></span>
       </button>
     </div>
+
+    <HeaderDrawer :open="drawerOpen" @close="drawerOpen = false" />
   </header>
 </template>
 
@@ -47,68 +78,105 @@ watch(() => route.fullPath, () => (mobileOpen.value = false))
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba($paper, 0.92);
+  background: rgba($paper, 0.94);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid $line;
+  border-bottom: 1px solid transparent;
+  @include transition(border-color);
+
+  &--scrolled {
+    border-color: $line;
+  }
 
   &__inner {
     @include container;
     @include flex(row, center, space-between, 1rem);
-    padding-block: 0.85rem;
+    height: var(--header-h);
   }
 
   &__logo {
-    @include display($text-xl, 600);
-    color: $ink;
+    flex-shrink: 0;
+    border-radius: $radius-sm;
+
+    img {
+      height: 50px;
+      width: auto;
+    }
+  }
+
+  &__nav,
+  &__user {
+    display: none;
+
+    @include from('lg') {
+      @include flex(row, center, flex-start, 1.9rem);
+    }
   }
 
   &__nav {
-    display: none;
+    margin-inline: auto;
+  }
 
-    @include from('md') {
-      @include flex(row, center, flex-end, 1.75rem);
-    }
-
-    &--open {
-      @include until('md') {
-        @include flex(column, stretch, flex-start, 0.5rem);
-        position: fixed;
-        inset: 0;
-        top: 61px;
-        background: $paper;
-        padding: 1.5rem 1.25rem;
-        z-index: 90;
-      }
-    }
+  &__user {
+    gap: 1.3rem;
   }
 
   &__link {
-    @include eyebrow;
+    position: relative;
+    font-size: $text-sm;
+    font-weight: 500;
     color: $ink-soft;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid transparent;
-    @include transition;
+    padding: 0.5rem 0;
+    @include transition(color);
+
+    // Subrayado que crece desde la izquierda.
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0.2rem;
+      height: 1px;
+      background: $clay;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s $ease;
+    }
 
     &:hover,
-    &.router-link-active {
-      color: $accent-deep;
-      border-color: $accent;
+    &.router-link-exact-active {
+      color: $ink;
+
+      &::after {
+        transform: scaleX(1);
+      }
+    }
+
+    &--user i {
+      color: $sage;
+      margin-right: 0.25rem;
     }
   }
 
   &__cta {
-    padding: 0.6rem 1.3rem;
-    font-size: $text-xs;
+    min-height: 2.5rem;
+    padding: 0.55rem 1.4rem;
   }
 
   &__burger {
-    font-size: 1.3rem;
-    color: $ink;
-    width: 2.4rem;
-    height: 2.4rem;
-    @include flex(row, center, center);
+    @include flex(column, center, center, 6px);
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.5rem;
+    border-radius: $radius-sm;
 
-    @include from('md') {
+    span {
+      display: block;
+      width: 1.5rem;
+      height: 1.5px;
+      background: $ink;
+    }
+
+    @include from('lg') {
       display: none;
     }
   }
