@@ -5,7 +5,8 @@ import { adminCopy } from '@/config/admin'
 import type { ApiError } from '@/types'
 import type { VideoStatus, VideoUploadTicket } from '@/types/admin'
 
-export type VideoPhase = 'idle' | 'preparing' | 'uploading' | 'paused' | 'processing' | 'ready' | 'error'
+export type VideoPhase =
+  'idle' | 'preparing' | 'uploading' | 'paused' | 'processing' | 'ready' | 'error'
 
 const STORAGE_PREFIX = 'admin:video-upload:'
 const POLL_MS = 5000
@@ -191,7 +192,8 @@ export function useVideoUpload(lessonId: () => string, onReady: (durationSeconds
       const state = classify(result)
       if (state === 'ready') setPhase('ready')
       else if (state === 'processing') beginPolling()
-      else if (state === 'empty') message.value = 'La subida anterior no terminó. Elige el mismo archivo para continuarla.'
+      else if (state === 'empty')
+        message.value = 'La subida anterior no terminó. Elige el mismo archivo para continuarla.'
     } catch {
       /* sin estado: se deja subir de nuevo */
     }
