@@ -15,10 +15,14 @@ class AdminProductsService extends AdminAPIBase {
     return this.fetchList<AdminProduct>('admin/products')
   }
 
-  /** El contrato no expone GET /admin/products/:id: se busca en el listado (son pocos productos). */
+  /** null si el producto ya no existe: la vista decide qué mostrar. */
   async getById(id: string): Promise<AdminProduct | null> {
-    const products = await this.list()
-    return products.find((product) => product.id === id) || null
+    try {
+      return await this.fetch<AdminProduct>(`admin/products/${id}`)
+    } catch (error) {
+      if ((error as { status?: number }).status === 404) return null
+      throw error
+    }
   }
 
   createProduct(payload: AdminProductPayload): Promise<AdminProduct> {
