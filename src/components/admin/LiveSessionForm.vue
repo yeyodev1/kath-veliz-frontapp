@@ -22,11 +22,21 @@ const emit = defineEmits<{ close: []; save: [] }>()
 </script>
 
 <template>
-  <AdminSheet :open="form.open" :title="form.id ? 'Editar clase en vivo' : 'Nueva clase en vivo'" @close="emit('close')">
+  <AdminSheet
+    :open="form.open"
+    :title="form.id ? 'Editar clase en vivo' : 'Nueva clase en vivo'"
+    @close="emit('close')"
+  >
     <form id="live-form" class="adm-form" @submit.prevent="emit('save')">
       <div class="adm-field">
         <label for="live-title">Título de la clase</label>
-        <input id="live-title" v-model="form.title" type="text" placeholder="Ej.: Clase 1 — Tu presupuesto" required />
+        <input
+          id="live-title"
+          v-model="form.title"
+          type="text"
+          placeholder="Ej.: Clase 1 — Tu presupuesto"
+          required
+        />
       </div>
 
       <div class="adm-field">
@@ -57,7 +67,9 @@ const emit = defineEmits<{ close: []; save: [] }>()
         <label for="live-recording">Grabación (opcional)</label>
         <select id="live-recording" v-model="form.recordingLesson">
           <option value="">Todavía no hay grabación</option>
-          <option v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">{{ lesson.label }}</option>
+          <option v-for="lesson in lessons" :key="lesson.id" :value="lesson.id">
+            {{ lesson.label }}
+          </option>
         </select>
         <p class="adm-field__hint">
           Después de la clase, sube la grabación como una lección del curso y elígela aquí.
