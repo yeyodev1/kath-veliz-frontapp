@@ -23,13 +23,18 @@ watch(
 
 // Un toque fuera de la hoja no debe tumbar una subida de varios minutos.
 function close() {
-  if (uploading.value) toast.info('El video se está subiendo. Espera a que termine o ponlo en pausa.')
+  if (uploading.value)
+    toast.info('El video se está subiendo. Espera a que termine o ponlo en pausa.')
   else emit('close')
 }
 </script>
 
 <template>
-  <AdminSheet :open="form.open" :title="form.id ? 'Editar lección' : 'Nueva lección'" @close="close">
+  <AdminSheet
+    :open="form.open"
+    :title="form.id ? 'Editar lección' : 'Nueva lección'"
+    @close="close"
+  >
     <form id="lesson-form" class="adm-form" @submit.prevent="emit('save')">
       <div class="adm-field">
         <label for="lesson-title">Título de la lección</label>
@@ -78,7 +83,12 @@ function close() {
 
     <template #footer>
       <button type="button" class="btn btn--ghost" @click="close">Cerrar</button>
-      <button type="submit" form="lesson-form" class="btn btn--primary" :disabled="saving || uploading || !form.title.trim()">
+      <button
+        type="submit"
+        form="lesson-form"
+        class="btn btn--primary"
+        :disabled="saving || uploading || !form.title.trim()"
+      >
         {{ saving ? 'Guardando…' : form.id ? 'Guardar lección' : 'Crear lección' }}
       </button>
     </template>
