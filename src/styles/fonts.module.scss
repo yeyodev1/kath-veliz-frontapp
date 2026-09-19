@@ -1,7 +1,14 @@
 // Solo variables. Las fuentes se cargan con <link> en index.html: este archivo
 // se inyecta en cada SFC vía vite.config.ts, así que no debe emitir CSS.
+//
+// El logo de Kath combina una serif de alto contraste con una sans condensada
+// en mayúsculas. Se respeta esa pareja:
+//   display   → Cormorant Garamond (titulares, con cursiva para el énfasis)
+//   condensed → Oswald (eyebrows, sellos, numeración)
+//   principal → Instrument Sans (cuerpo e interfaz)
 
-$font-display: 'Fraunces', Georgia, serif;
-$font-principal: 'Montserrat', system-ui, sans-serif;
+$font-display: 'Cormorant Garamond', 'Cormorant', Georgia, 'Times New Roman', serif;
+$font-condensed: 'Oswald', 'Arial Narrow', sans-serif;
+$font-principal: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 $font-secondary: $font-principal;
 $font-body: $font-principal;
