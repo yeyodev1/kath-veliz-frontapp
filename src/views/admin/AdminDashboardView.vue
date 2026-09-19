@@ -18,12 +18,37 @@ const cards = computed(() => {
   const data = stats.value
   if (!data) return []
   return [
-    { key: 'salesCents', value: formatCents(data.salesCents), icon: 'fa-solid fa-sack-dollar', to: '/admin/ordenes' },
-    { key: 'ordersPaid', value: data.ordersPaid, icon: 'fa-solid fa-receipt', to: '/admin/ordenes' },
-    { key: 'students', value: data.students, icon: 'fa-solid fa-user-graduate', to: '/admin/alumnos' },
+    {
+      key: 'salesCents',
+      value: formatCents(data.salesCents),
+      icon: 'fa-solid fa-sack-dollar',
+      to: '/admin/ordenes',
+    },
+    {
+      key: 'ordersPaid',
+      value: data.ordersPaid,
+      icon: 'fa-solid fa-receipt',
+      to: '/admin/ordenes',
+    },
+    {
+      key: 'students',
+      value: data.students,
+      icon: 'fa-solid fa-user-graduate',
+      to: '/admin/alumnos',
+    },
     { key: 'leads', value: data.leads, icon: 'fa-solid fa-address-book', to: '/admin/leads' },
-    { key: 'pendingRequests', value: data.pendingRequests, icon: 'fa-solid fa-clipboard-list', to: '/admin/solicitudes' },
-    { key: 'activeAccesses', value: data.activeAccesses, icon: 'fa-solid fa-key', to: '/admin/accesos' },
+    {
+      key: 'pendingRequests',
+      value: data.pendingRequests,
+      icon: 'fa-solid fa-clipboard-list',
+      to: '/admin/solicitudes',
+    },
+    {
+      key: 'activeAccesses',
+      value: data.activeAccesses,
+      icon: 'fa-solid fa-key',
+      to: '/admin/accesos',
+    },
   ] as const
 })
 
@@ -53,7 +78,9 @@ onMounted(load)
           :key="card.key"
           :to="card.to"
           class="stats__card"
-          :class="{ 'stats__card--alert': card.key === 'pendingRequests' && Number(card.value) > 0 }"
+          :class="{
+            'stats__card--alert': card.key === 'pendingRequests' && Number(card.value) > 0,
+          }"
         >
           <span class="stats__icon"><i :class="card.icon"></i></span>
           <span class="stats__value">{{ card.value }}</span>
