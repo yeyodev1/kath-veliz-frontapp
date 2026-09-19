@@ -86,7 +86,13 @@ const copy = adminCopy.products
     <div class="adm-row">
       <div class="adm-field">
         <label for="product-order">Orden en la web</label>
-        <input id="product-order" v-model.number="form.order" type="number" inputmode="numeric" min="0" />
+        <input
+          id="product-order"
+          v-model.number="form.order"
+          type="number"
+          inputmode="numeric"
+          min="0"
+        />
         <p class="adm-field__hint">El número más bajo aparece primero.</p>
       </div>
     </div>
@@ -96,7 +102,9 @@ const copy = adminCopy.products
       <span>
         Publicado
         <small>
-          {{ form.isPublished ? 'Se ve en la web.' : 'Borrador: solo tú lo ves, aquí en el panel.' }}
+          {{
+            form.isPublished ? 'Se ve en la web.' : 'Borrador: solo tú lo ves, aquí en el panel.'
+          }}
         </small>
       </span>
     </label>
