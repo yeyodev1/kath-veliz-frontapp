@@ -18,7 +18,11 @@ const emit = defineEmits<{ close: []; save: [] }>()
 </script>
 
 <template>
-  <AdminSheet :open="form.open" :title="form.id ? 'Editar cupón' : 'Nuevo cupón'" @close="emit('close')">
+  <AdminSheet
+    :open="form.open"
+    :title="form.id ? 'Editar cupón' : 'Nuevo cupón'"
+    @close="emit('close')"
+  >
     <form id="coupon-form" class="adm-form" @submit.prevent="emit('save')">
       <div class="adm-row">
         <div class="adm-field">
