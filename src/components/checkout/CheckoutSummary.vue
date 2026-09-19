@@ -41,7 +41,7 @@ const accessNote = computed(() => {
     <slot />
 
     <dl class="summary__lines">
-      <div class="summary__line">
+      <div v-if="discountCents > 0" class="summary__line">
         <dt>{{ copy.subtotal }}</dt>
         <dd>{{ formatCents(subtotalCents) }}</dd>
       </div>
@@ -60,12 +60,13 @@ const accessNote = computed(() => {
 <style scoped lang="scss">
 .summary {
   @include card;
-  @include flex(column, stretch, flex-start, 1.1rem);
-  padding: 1.25rem;
+  @include flex(column, stretch, flex-start, 0.75rem);
+  padding: 1rem 1.1rem;
   background: $sand;
   border-color: transparent;
 
   @include from('md') {
+    gap: 1.1rem;
     padding: 1.6rem;
   }
 
@@ -79,9 +80,9 @@ const accessNote = computed(() => {
 
   &__cover {
     @include flex(row, center, center);
-    flex: 0 0 4.5rem;
-    width: 4.5rem;
-    height: 4.5rem;
+    flex: 0 0 3.75rem;
+    width: 3.75rem;
+    height: 3.75rem;
     border-radius: $radius-sm;
     overflow: hidden;
     background: $surface;
@@ -123,7 +124,7 @@ const accessNote = computed(() => {
 
   &__lines {
     @include flex(column, stretch, flex-start, 0.5rem);
-    padding-top: 1rem;
+    padding-top: 0.75rem;
     border-top: 1px solid $line;
   }
 
@@ -142,17 +143,23 @@ const accessNote = computed(() => {
       font-weight: 600;
     }
 
-    &--total {
-      margin-top: 0.35rem;
+    &--discount + &--total {
+      margin-top: 0.25rem;
       padding-top: 0.75rem;
       border-top: 1px solid $line;
+    }
+
+    // Sin descuento el total es la única línea: no necesita su propio separador.
+    &--total {
       font-size: $text-base;
       font-weight: 600;
       color: $ink;
 
       dd {
         font-family: $font-display;
-        font-size: $text-xl;
+        font-size: $display-sm;
+        line-height: 1;
+        color: $accent;
       }
     }
   }
