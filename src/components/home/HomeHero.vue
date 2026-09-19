@@ -12,19 +12,28 @@ const hero = site.home.hero
       <div class="hero__copy">
         <p class="hero__eyebrow">{{ hero.eyebrow }}</p>
         <h1 class="hero__title">
-          {{ hero.title.before }}<em>{{ hero.title.em }}</em>{{ hero.title.after }}
+          {{ hero.title.before }}<em>{{ hero.title.em }}</em
+          >{{ hero.title.after }}
         </h1>
         <p class="hero__text">{{ hero.text }}</p>
         <div class="hero__actions">
           <BaseButton :to="hero.primary.to" icon-right="fa-solid fa-arrow-right">
             {{ hero.primary.label }}
           </BaseButton>
-          <BaseButton :to="hero.secondary.to" variant="ghost">{{ hero.secondary.label }}</BaseButton>
+          <BaseButton :to="hero.secondary.to" variant="ghost">{{
+            hero.secondary.label
+          }}</BaseButton>
         </div>
       </div>
 
       <div class="hero__media">
-        <BrandPhoto :src="site.images.hero" :alt="hero.photoAlt" tone="forest" eager />
+        <BrandPhoto
+          :src="site.images.hero"
+          :src-mobile="site.images.heroMobile"
+          :alt="hero.photoAlt"
+          tone="forest"
+          eager
+        />
         <p class="hero__stamp" aria-hidden="true">
           <span>{{ hero.stamp }}</span>
         </p>
