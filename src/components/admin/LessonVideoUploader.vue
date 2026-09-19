@@ -18,7 +18,9 @@ const { phase, progress, message, fileName, start, pause, resume, checkExisting 
   (duration) => emit('ready', duration),
 )
 
-const busy = computed(() => ['preparing', 'uploading', 'paused', 'processing'].includes(phase.value))
+const busy = computed(() =>
+  ['preparing', 'uploading', 'paused', 'processing'].includes(phase.value),
+)
 
 // Quien contiene este componente no debe cerrarse a mitad de una subida.
 watch(phase, (next) => emit('uploading', next === 'preparing' || next === 'uploading'))
@@ -52,12 +54,23 @@ onMounted(() => {
 
     <div v-if="phase === 'uploading' || phase === 'paused'" class="video__upload">
       <p class="video__file">{{ fileName }}</p>
-      <div class="adm-progress" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
+      <div
+        class="adm-progress"
+        role="progressbar"
+        :aria-valuenow="progress"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
         <div class="adm-progress__bar" :style="{ width: `${progress}%` }"></div>
       </div>
       <div class="video__row">
         <strong>{{ phase === 'paused' ? 'En pausa' : 'Subiendo' }} · {{ progress }}%</strong>
-        <button v-if="phase === 'uploading'" type="button" class="btn btn--ghost adm-btn-sm" @click="pause">
+        <button
+          v-if="phase === 'uploading'"
+          type="button"
+          class="btn btn--ghost adm-btn-sm"
+          @click="pause"
+        >
           <i class="fa-solid fa-pause"></i>
           Pausar
         </button>
@@ -84,7 +97,12 @@ onMounted(() => {
     <p v-else-if="message" class="adm-field__hint">{{ message }}</p>
 
     <div v-if="!busy" class="adm-actions">
-      <button v-if="phase === 'error'" type="button" class="btn btn--primary adm-btn-sm" @click="resume">
+      <button
+        v-if="phase === 'error'"
+        type="button"
+        class="btn btn--primary adm-btn-sm"
+        @click="resume"
+      >
         <i class="fa-solid fa-rotate-right"></i>
         Continuar
       </button>
