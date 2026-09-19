@@ -26,13 +26,41 @@ export interface AdminNavItem {
 
 export const adminNav: AdminNavItem[] = [
   { label: 'Resumen', short: 'Resumen', to: '/admin', icon: 'fa-solid fa-house', primary: true },
-  { label: 'Productos', short: 'Productos', to: '/admin/productos', icon: 'fa-solid fa-box-open', primary: true },
-  { label: 'Alumnos y accesos', short: 'Accesos', to: '/admin/accesos', icon: 'fa-solid fa-key', primary: true },
-  { label: 'Solicitudes de asesoría', short: 'Solicitudes', to: '/admin/solicitudes', icon: 'fa-solid fa-clipboard-list', primary: true },
+  {
+    label: 'Productos',
+    short: 'Productos',
+    to: '/admin/productos',
+    icon: 'fa-solid fa-box-open',
+    primary: true,
+  },
+  {
+    label: 'Alumnos y accesos',
+    short: 'Accesos',
+    to: '/admin/accesos',
+    icon: 'fa-solid fa-key',
+    primary: true,
+  },
+  {
+    label: 'Solicitudes de asesoría',
+    short: 'Solicitudes',
+    to: '/admin/solicitudes',
+    icon: 'fa-solid fa-clipboard-list',
+    primary: true,
+  },
   { label: 'Clases en vivo', short: 'En vivo', to: '/admin/en-vivo', icon: 'fa-solid fa-video' },
-  { label: 'Lista de alumnos', short: 'Alumnos', to: '/admin/alumnos', icon: 'fa-solid fa-user-graduate' },
+  {
+    label: 'Lista de alumnos',
+    short: 'Alumnos',
+    to: '/admin/alumnos',
+    icon: 'fa-solid fa-user-graduate',
+  },
   { label: 'Órdenes', short: 'Órdenes', to: '/admin/ordenes', icon: 'fa-solid fa-receipt' },
-  { label: 'Contactos (leads)', short: 'Contactos', to: '/admin/leads', icon: 'fa-solid fa-address-book' },
+  {
+    label: 'Contactos (leads)',
+    short: 'Contactos',
+    to: '/admin/leads',
+    icon: 'fa-solid fa-address-book',
+  },
   { label: 'Cupones', short: 'Cupones', to: '/admin/cupones', icon: 'fa-solid fa-ticket' },
 ]
 
@@ -148,23 +176,27 @@ export const adminCopy = {
     create: 'Nuevo producto',
     empty: 'Todavía no hay productos. Crea el primero.',
     deleteTitle: '¿Borrar este producto?',
-    deleteMessage: 'Se borra el producto con su contenido. Los alumnos dejarán de verlo. No se puede deshacer.',
+    deleteMessage:
+      'Se borra el producto con su contenido. Los alumnos dejarán de verlo. No se puede deshacer.',
     lifetime: 'De por vida',
     limited: 'Por un tiempo limitado',
   },
 
   content: {
-    emptyModules: 'Este producto aún no tiene módulos. Crea el primero para empezar a subir lecciones.',
+    emptyModules:
+      'Este producto aún no tiene módulos. Crea el primero para empezar a subir lecciones.',
     emptyLessons: 'Este módulo no tiene lecciones todavía.',
     deleteModuleTitle: '¿Borrar este módulo?',
     deleteModuleMessage: 'Se borran también todas sus lecciones. No se puede deshacer.',
     deleteLessonTitle: '¿Borrar esta lección?',
-    deleteLessonMessage: 'Se borra la lección y su video deja de estar disponible. No se puede deshacer.',
+    deleteLessonMessage:
+      'Se borra la lección y su video deja de estar disponible. No se puede deshacer.',
     videoProcessing: 'Procesando en Bunny…',
     videoProcessingHint: 'Puedes salir de esta pantalla: el video se sigue procesando solo.',
     videoReady: 'Video listo',
     videoNone: 'Sin video',
-    videoKeepOpen: 'No cierres esta pantalla mientras sube. Si se corta el internet, vuelve a elegir el mismo archivo y continúa donde quedó.',
+    videoKeepOpen:
+      'No cierres esta pantalla mientras sube. Si se corta el internet, vuelve a elegir el mismo archivo y continúa donde quedó.',
   },
 
   live: {
@@ -173,7 +205,8 @@ export const adminCopy = {
     pickProduct: 'Elige un curso para ver y agendar sus clases en vivo.',
     empty: 'Este curso no tiene clases en vivo agendadas.',
     notifyTitle: '¿Avisar a los alumnos?',
-    notifyMessage: 'Se envía un correo con la fecha y el enlace de Meet a todas las personas con acceso vigente a este curso.',
+    notifyMessage:
+      'Se envía un correo con la fecha y el enlace de Meet a todas las personas con acceso vigente a este curso.',
     deleteTitle: '¿Borrar esta clase?',
     deleteMessage: 'La clase desaparece del calendario de los alumnos.',
   },
@@ -184,7 +217,8 @@ export const adminCopy = {
     grant: 'Dar acceso manual',
     empty: 'No hay accesos con esos filtros.',
     revokeTitle: '¿Revocar este acceso?',
-    revokeMessage: 'La persona deja de ver este producto de inmediato. Puedes volver a darle acceso cuando quieras.',
+    revokeMessage:
+      'La persona deja de ver este producto de inmediato. Puedes volver a darle acceso cuando quieras.',
     expiryLegend: '¿Hasta cuándo tiene acceso?',
     expiryDate: 'Se revoca el…',
     expiryDateHint: 'El acceso se corta solo al final de ese día.',
