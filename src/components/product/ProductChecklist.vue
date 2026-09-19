@@ -12,7 +12,10 @@ withDefaults(defineProps<{ title: string; items: string[]; variant?: 'check' | '
     <h2 class="checklist__title">{{ title }}</h2>
     <ul class="checklist__list">
       <li v-for="item in items" :key="item">
-        <i :class="variant === 'check' ? 'fa-solid fa-check' : 'fa-solid fa-star'" aria-hidden="true"></i>
+        <i
+          :class="variant === 'check' ? 'fa-solid fa-check' : 'fa-solid fa-star'"
+          aria-hidden="true"
+        ></i>
         <span>{{ item }}</span>
       </li>
     </ul>
