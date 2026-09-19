@@ -14,7 +14,12 @@ const copy = site.home.testimonials
       <SectionHeading v-reveal :eyebrow="copy.eyebrow" :title="copy.title" />
 
       <div class="testimonials__list">
-        <figure v-for="(item, i) in copy.items" :key="item.name" v-reveal="i + 1" class="testimonial">
+        <figure
+          v-for="(item, i) in copy.items"
+          :key="item.name"
+          v-reveal="i + 1"
+          class="testimonial"
+        >
           <i class="fa-solid fa-quote-left testimonial__mark" aria-hidden="true"></i>
           <blockquote class="testimonial__quote">{{ item.quote }}</blockquote>
           <figcaption class="testimonial__author">
