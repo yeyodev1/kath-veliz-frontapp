@@ -11,11 +11,24 @@ import { useProductForm } from '@/composables/admin/useProductForm'
 
 const route = useRoute()
 const router = useRouter()
-const { form, productId, isNew, loading, error, saving, slugTouched, load, save, reset, onTitleInput } =
-  useProductForm()
+const {
+  form,
+  productId,
+  isNew,
+  loading,
+  error,
+  saving,
+  slugTouched,
+  load,
+  save,
+  reset,
+  onTitleInput,
+} = useProductForm()
 
 const hasContent = computed(() => !isNew.value && ['course', 'download'].includes(form.type))
-const tab = computed(() => (route.query.tab === 'contenido' && hasContent.value ? 'contenido' : 'datos'))
+const tab = computed(() =>
+  route.query.tab === 'contenido' && hasContent.value ? 'contenido' : 'datos',
+)
 
 function setTab(next: 'datos' | 'contenido') {
   router.replace({ query: next === 'contenido' ? { tab: next } : {} })
@@ -43,7 +56,11 @@ watch(
 
     <AdminState :loading="loading" :error="error" @retry="load(productId)">
       <nav v-if="hasContent" class="adm-tabs" aria-label="Secciones del producto">
-        <button class="adm-tabs__tab" :class="{ 'adm-tabs__tab--active': tab === 'datos' }" @click="setTab('datos')">
+        <button
+          class="adm-tabs__tab"
+          :class="{ 'adm-tabs__tab--active': tab === 'datos' }"
+          @click="setTab('datos')"
+        >
           Datos
         </button>
         <button
@@ -58,7 +75,12 @@ watch(
       <ProductContentPanel v-if="tab === 'contenido'" :product-id="productId" />
 
       <form v-else class="product-edit" novalidate @submit.prevent="save">
-        <ProductFormBasics :form="form" :is-new="isNew" @title-input="onTitleInput" @slug-input="slugTouched = true" />
+        <ProductFormBasics
+          :form="form"
+          :is-new="isNew"
+          @title-input="onTitleInput"
+          @slug-input="slugTouched = true"
+        />
         <ProductFormSale :form="form" />
         <ProductFormDetails :form="form" />
 
