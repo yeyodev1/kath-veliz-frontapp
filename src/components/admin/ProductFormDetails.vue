@@ -15,7 +15,7 @@ defineProps<{ form: ProductFormState }>()
     <AdminFileUpload
       v-model="form.downloadFile"
       label="Archivo que recibe quien compra"
-      hint="Queda privado: solo lo puede descargar quien tenga acceso. Hasta 100 MB."
+      hint="Queda privado: solo lo puede descargar quien tenga acceso. Hasta 10 MB."
       private
     />
   </section>
@@ -43,7 +43,7 @@ defineProps<{ form: ProductFormState }>()
     <AdminFileUpload
       v-model="form.infoPdf"
       label="PDF informativo"
-      hint="Se envía por correo apenas la persona llena la encuesta."
+      hint="Se envía por correo apenas la persona llena la encuesta. Hasta 10 MB."
       accept="application/pdf"
     />
     <AdminSurveyBuilder v-model="form.surveyQuestions" />
