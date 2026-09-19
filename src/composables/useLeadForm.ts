@@ -46,7 +46,7 @@ export function useLeadForm(options: LeadFormOptions) {
     try {
       await leadService.create({
         // El modelo exige nombre; el newsletter no lo pide, así que va la parte local del correo.
-        name: askName ? form.name.trim() : form.email.trim().split('@')[0],
+        name: askName ? form.name.trim() : (form.email.trim().split('@')[0] ?? ''),
         email: form.email.trim().toLowerCase(),
         source: options.source,
         productSlug: options.productSlug,
