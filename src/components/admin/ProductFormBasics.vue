@@ -72,7 +72,7 @@ const emit = defineEmits<{ titleInput: []; slugInput: [] }>()
     <AdminImageUpload
       v-model="form.cover"
       label="Portada"
-      hint="Horizontal, JPG o PNG, hasta 10 MB."
+      hint="Horizontal, JPG o PNG. Si la foto pesa mucho, se reduce sola al subirla."
     />
   </section>
 </template>
