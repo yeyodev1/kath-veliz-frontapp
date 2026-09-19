@@ -18,10 +18,13 @@
   --text-soft: #{$ink-soft};
   --accent: #{$accent};
   --border: #{$line};
+  // Alto del header pegajoso: lo usan las anclas y las columnas sticky.
+  --header-h: 64px;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
   -webkit-text-size-adjust: 100%;
 
   @include reduced-motion {
@@ -48,8 +51,18 @@ h3,
 h4 {
   font-family: $font-display;
   font-weight: 500;
-  line-height: 1.1;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
   text-wrap: balance;
+}
+
+// La cursiva de la serif es el recurso de énfasis de la marca.
+h1 em,
+h2 em,
+h3 em {
+  font-style: italic;
+  font-weight: 500;
+  color: $clay;
 }
 
 p {
@@ -79,7 +92,8 @@ input,
 select,
 textarea {
   font: inherit;
-  font-size: 0.95rem;
+  // 16px mínimo: por debajo, iOS hace zoom al enfocar.
+  font-size: 1rem;
   color: $ink;
   background: $surface;
   border: 1px solid $line;
@@ -93,13 +107,36 @@ textarea {
 
   &:focus {
     border-color: $accent;
-    box-shadow: 0 0 0 3px rgba($accent, 0.15);
+    box-shadow: 0 0 0 3px rgba($accent, 0.18);
+  }
+
+  &::placeholder {
+    color: $ink-muted;
+    opacity: 1;
+  }
+
+  &:disabled {
+    background: $sand;
+    color: $ink-muted;
+    cursor: not-allowed;
   }
 }
 
+input[type='checkbox'],
+input[type='radio'] {
+  width: auto;
+  accent-color: $accent;
+}
+
+textarea {
+  min-height: 7rem;
+  resize: vertical;
+  line-height: 1.5;
+}
+
 label {
-  font-size: 0.82rem;
-  font-weight: 500;
+  font-size: 0.86rem;
+  font-weight: 600;
   color: $ink-soft;
   display: block;
   margin-bottom: 0.35rem;
@@ -111,8 +148,22 @@ label {
 }
 
 ::selection {
-  background: $accent-soft;
+  background: $butter;
   color: $ink;
+}
+
+// Enlace de texto dentro de párrafos y formularios.
+.link {
+  color: $accent;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  @include transition(color);
+
+  &:hover {
+    color: $clay-deep;
+  }
 }
 
 .btn {
@@ -121,12 +172,21 @@ label {
   justify-content: center;
   gap: 0.5rem;
   font-family: $font-principal;
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  padding: 0.85rem 1.8rem;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  text-align: center;
+  // 44px de alto mínimo: es un objetivo táctil.
+  min-height: 2.9rem;
+  padding: 0.8rem 1.7rem;
+  border: 1px solid transparent;
   border-radius: $radius-pill;
   @include transition;
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
 
   &--primary {
     background: $accent;
@@ -149,13 +209,28 @@ label {
   }
 
   &--ghost {
-    border: 1px solid $ink;
+    border-color: $ink;
     color: $ink;
 
     &:hover {
       background: $ink;
       color: $surface;
     }
+  }
+
+  // Sobre fondos verdes u oscuros.
+  &--light {
+    background: $paper;
+    color: $accent-deep;
+
+    &:hover {
+      background: $butter;
+      transform: translateY(-1px);
+    }
+  }
+
+  &--block {
+    width: 100%;
   }
 
   &--danger {
