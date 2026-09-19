@@ -152,7 +152,9 @@ const hero = site.home.hero
     font-weight: 600;
     background: $paper;
     color: $ink;
-    padding: 0.45rem 0.8rem;
+    // 44 px de alto: es un enlace que se toca con el pulgar sobre la foto.
+    min-height: 2.75rem;
+    padding: 0.45rem 0.9rem;
     border-radius: $radius-pill;
     @include transition;
 
