@@ -50,6 +50,11 @@
     resize: vertical;
     line-height: 1.5;
   }
+
+  // Los selectores de archivo van ocultos dentro de su botón.
+  input[type='file'] {
+    min-height: 0;
+  }
 }
 
 .adm-field {
