@@ -7,6 +7,8 @@ import { site } from '@/config/site'
 withDefaults(
   defineProps<{
     src: string
+    /** Encuadre vertical para pantallas angostas (opcional). */
+    srcMobile?: string
     alt: string
     tone?: 'forest' | 'sand' | 'clay'
     ratio?: 'portrait' | 'square' | 'wide'
@@ -20,14 +22,17 @@ const failed = ref(false)
 
 <template>
   <figure class="photo" :class="[`photo--${tone}`, `photo--${ratio}`]">
-    <img
-      v-if="!failed && src"
-      :src="src"
-      :alt="alt"
-      :loading="eager ? 'eager' : 'lazy'"
-      decoding="async"
-      @error="failed = true"
-    />
+    <picture v-if="!failed && src">
+      <source v-if="srcMobile" :srcset="srcMobile" media="(max-width: 767px)" />
+      <img
+        :src="src"
+        :alt="alt"
+        :loading="eager ? 'eager' : 'lazy'"
+        :fetchpriority="eager ? 'high' : undefined"
+        decoding="async"
+        @error="failed = true"
+      />
+    </picture>
     <div v-else class="photo__fallback" role="img" :aria-label="alt">
       <img :src="site.logo.mark" alt="" class="photo__mark" />
     </div>
@@ -62,10 +67,17 @@ const failed = ref(false)
     background: $clay-soft;
   }
 
-  > img {
+  picture,
+  picture img {
+    display: block;
     width: 100%;
     height: 100%;
+  }
+
+  picture img {
     object-fit: cover;
+    // Las fotos son retratos: al recortar, que mande la cara y no la cintura.
+    object-position: center 22%;
   }
 
   &__fallback {
