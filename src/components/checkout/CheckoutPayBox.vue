@@ -146,6 +146,7 @@ const urgent = computed(() => props.secondsLeft <= 60)
 
   &__edit {
     align-self: flex-start;
+    min-height: 2.75rem;
     padding: 0.5rem 0;
     font-size: $text-sm;
     font-weight: 600;
