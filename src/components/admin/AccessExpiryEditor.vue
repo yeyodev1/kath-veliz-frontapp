@@ -47,7 +47,11 @@ async function save() {
       <p class="adm-muted">
         Ahora mismo:
         <strong>
-          {{ access.expiresAt ? `se revoca el ${formatDateEc(access.expiresAt)}` : adminCopy.access.neverLabel }}
+          {{
+            access.expiresAt
+              ? `se revoca el ${formatDateEc(access.expiresAt)}`
+              : adminCopy.access.neverLabel
+          }}
         </strong>
       </p>
       <AdminExpiryChoice v-model="choice" :min-date="minDate" name="edit-expiry" />
@@ -55,7 +59,12 @@ async function save() {
 
     <template #footer>
       <button type="button" class="btn btn--ghost" @click="emit('close')">Cancelar</button>
-      <button type="submit" form="expiry-form" class="btn btn--primary" :disabled="!isValid || saving">
+      <button
+        type="submit"
+        form="expiry-form"
+        class="btn btn--primary"
+        :disabled="!isValid || saving"
+      >
         {{ saving ? 'Guardando…' : 'Guardar' }}
       </button>
     </template>
