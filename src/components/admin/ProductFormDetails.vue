@@ -32,7 +32,9 @@ defineProps<{ form: ProductFormState }>()
         autocapitalize="none"
         placeholder="https://…"
       />
-      <p class="adm-field__hint">Este enlace llega por correo a quien deje su nombre y su correo.</p>
+      <p class="adm-field__hint">
+        Este enlace llega por correo a quien deje su nombre y su correo.
+      </p>
     </div>
   </section>
 
