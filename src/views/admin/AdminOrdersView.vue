@@ -39,7 +39,11 @@ onMounted(list.load)
       @retry="list.load"
     >
       <div class="adm-list">
-        <AdminRecord v-for="order in list.items.value" :key="order.id" :muted="order.status !== 'paid'">
+        <AdminRecord
+          v-for="order in list.items.value"
+          :key="order.id"
+          :muted="order.status !== 'paid'"
+        >
           <template #title>
             {{ formatCents(order.totalCents) }}
             <small>{{ refUser(order.user).name || refUser(order.user).email || 'Cliente' }}</small>
@@ -53,8 +57,12 @@ onMounted(list.load)
           <AdminDatum label="Productos" wide>
             {{ order.items.map((item) => item.title).join(', ') || '—' }}
           </AdminDatum>
-          <AdminDatum v-if="refUser(order.user).name" label="Correo">{{ refUser(order.user).email }}</AdminDatum>
-          <AdminDatum label="Fecha">{{ formatDateTimeEc(order.paidAt || order.createdAt) }}</AdminDatum>
+          <AdminDatum v-if="refUser(order.user).name" label="Correo">{{
+            refUser(order.user).email
+          }}</AdminDatum>
+          <AdminDatum label="Fecha">{{
+            formatDateTimeEc(order.paidAt || order.createdAt)
+          }}</AdminDatum>
           <AdminDatum v-if="order.discountCents" label="Descuento">
             −{{ formatCents(order.discountCents) }}
             <template v-if="order.coupon">({{ order.coupon }})</template>
