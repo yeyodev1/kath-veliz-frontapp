@@ -18,5 +18,7 @@ export interface SessionUser {
   email: string
   name: string
   phone: string
+  /** Cédula: la pide Payphone al pagar. */
+  documentId: string
   accountType: 'customer' | 'admin' | string
 }
