@@ -87,6 +87,9 @@ async function submit() {
     align-self: flex-end;
     font-size: $text-sm;
     margin-top: -0.4rem;
+    // Área táctil de 44 px sin mover el texto de su sitio.
+    padding: 0.7rem 0;
+    margin-bottom: -0.6rem;
   }
 
   &__switch {
