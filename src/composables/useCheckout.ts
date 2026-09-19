@@ -1,27 +1,17 @@
-import { computed, reactive, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { orderService } from '@/services/order.service'
 import { useUserStore } from '@/stores/user'
 import { useToastStore } from '@/stores/toast'
 import { usePayphoneBox } from '@/composables/usePayphoneBox'
+import { useCheckoutIdentity } from '@/composables/useCheckoutIdentity'
 import { studentCopy } from '@/config/student'
-import type { ApiError, SessionUser } from '@/types'
-import type { BuyerUser, CouponResult, OrderSummary, StudentProduct } from '@/types/student'
+import type { ApiError } from '@/types'
+import type { CouponResult, OrderSummary, StudentProduct } from '@/types/student'
 
 const copy = studentCopy.checkout
 
-/** Payphone pide el celular como +593984111222; la gente escribe 0984111222. */
-export function normalizePhone(raw: string): string {
-  const digits = raw.replace(/[^\d+]/g, '')
-  if (/^09\d{8}$/.test(digits)) return `+593${digits.slice(1)}`
-  if (/^5939\d{8}$/.test(digits)) return `+${digits}`
-  return digits
-}
-
-/** De vuelta a como se escribe acá, para precargar el campo. */
-function displayPhone(stored: string): string {
-  return /^\+5939\d{8}$/.test(stored) ? `0${stored.slice(4)}` : stored
-}
+export const CHECKOUT_MAIN_ID = 'checkout-main'
 
 export function useCheckout() {
   const route = useRoute()
@@ -29,26 +19,24 @@ export function useCheckout() {
   const userStore = useUserStore()
   const toast = useToastStore()
   const box = usePayphoneBox()
+  const identity = useCheckoutIdentity()
 
   const slug = computed(() => String(route.params.slug || ''))
   // El enlace de pago de una asesoría aprobada llega con ?solicitud=<id>.
   const serviceRequestId = computed(() =>
     typeof route.query.solicitud === 'string' ? route.query.solicitud : undefined,
   )
-  const user = computed(() => userStore.user as BuyerUser | null)
-
   const product = ref<StudentProduct | null>(null)
   const loading = ref(true)
   const loadError = ref<'' | 'notFound' | 'error'>('')
+  // El enlace de pago apunta a una solicitud que ya no está aprobada (pagada, rechazada o inexistente).
+  const requestInvalid = ref(false)
 
   const step = ref<'form' | 'paying'>('form')
   const creating = ref(false)
   const error = ref('')
   const alreadyOwned = ref(false)
   const order = ref<OrderSummary | null>(null)
-
-  const buyer = reactive({ phone: '', documentId: '' })
-  const buyerErrors = reactive({ phone: '', documentId: '' })
 
   const couponCode = ref('')
   const coupon = ref<CouponResult | null>(null)
@@ -69,13 +57,31 @@ export function useCheckout() {
     )
   })
 
+  /** Precarga nombre, correo y celular de la solicitud aprobada. Si el API falla, se sigue sin precarga. */
+  async function loadRequest() {
+    if (!serviceRequestId.value) return
+    try {
+      const prefill = await orderService.requestPrefill(serviceRequestId.value)
+      if (prefill.productSlug === slug.value) identity.setRequest(prefill)
+      else requestInvalid.value = true
+    } catch (e) {
+      if ((e as ApiError).status === 404) requestInvalid.value = true
+    }
+  }
+
   async function load() {
     loading.value = true
     loadError.value = ''
+    requestInvalid.value = false
     try {
-      product.value = await orderService.product(slug.value)
-      buyer.phone = displayPhone(user.value?.phone || '')
-      buyer.documentId = user.value?.documentId || ''
+      // La ruta ya no exige sesión, así que el guard no la restaura: se hace acá
+      // para que quien ya tiene cuenta vea sus datos precargados.
+      const [loaded] = await Promise.all([
+        orderService.product(slug.value),
+        userStore.restore(),
+        loadRequest(),
+      ])
+      product.value = loaded
     } catch (e) {
       loadError.value = (e as ApiError).status === 404 ? 'notFound' : 'error'
     } finally {
@@ -105,33 +111,22 @@ export function useCheckout() {
     couponError.value = ''
   }
 
-  function validateBuyer(): boolean {
-    const phone = normalizePhone(buyer.phone)
-    const documentId = buyer.documentId.trim()
-    buyerErrors.phone = /^\+?\d{9,15}$/.test(phone) ? '' : copy.buyer.phoneError
-    buyerErrors.documentId = /^[A-Za-z0-9]{6,20}$/.test(documentId) ? '' : copy.buyer.documentError
-    return !buyerErrors.phone && !buyerErrors.documentId
-  }
-
   /** Crea una orden nueva y monta la Cajita. También es el "generar nuevo intento". */
   async function confirm() {
-    if (creating.value || !product.value || !validateBuyer()) return
-    const phone = normalizePhone(buyer.phone)
-    const documentId = buyer.documentId.trim()
+    if (creating.value || !product.value) return
 
     error.value = ''
     creating.value = true
     try {
-      if (user.value && (user.value.phone !== phone || user.value.documentId !== documentId)) {
-        const saved = await orderService.saveBuyer({ name: user.value.name, phone, documentId })
-        userStore.user = saved as SessionUser
-      }
+      // Primero la cuenta (registro o ingreso en la misma página) y los datos del comprador.
+      const buyer = await identity.submit()
+      if (!buyer) return
 
       const result = await orderService.create({
         productSlug: slug.value,
         couponCode: coupon.value?.code,
-        phone,
-        documentId,
+        phone: buyer.phone,
+        documentId: buyer.documentId,
         serviceRequestId: serviceRequestId.value,
       })
       order.value = result.order
@@ -144,6 +139,7 @@ export function useCheckout() {
       }
 
       step.value = 'paying'
+      scrollToMain()
       await box.mount(result.payphone)
     } catch (e) {
       const apiError = e as ApiError
@@ -154,26 +150,44 @@ export function useCheckout() {
     }
   }
 
+  function scrollToMain() {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    nextTick(() =>
+      document
+        .getElementById(CHECKOUT_MAIN_ID)
+        ?.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }),
+    )
+  }
+
   /** Volver al formulario abandona el intento: la orden queda `pending` y no se cobra. */
   function edit() {
     box.reset()
     order.value = null
     step.value = 'form'
+    identity.startEdit()
   }
+
+  // Si la sesión caduca con la Cajita abierta, ese intento ya no se puede confirmar.
+  watch(identity.user, (u) => {
+    if (!u && step.value === 'paying') {
+      box.reset()
+      order.value = null
+      step.value = 'form'
+    }
+  })
 
   return {
     slug,
-    user,
+    identity,
     product,
     loading,
     loadError,
+    requestInvalid,
     purchasable,
     step,
     creating,
     error,
     alreadyOwned,
-    buyer,
-    buyerErrors,
     couponCode,
     coupon,
     couponError,
