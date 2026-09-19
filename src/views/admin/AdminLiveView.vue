@@ -29,14 +29,23 @@ function isPast(session: LiveSession): boolean {
 
 function askNotify(session: LiveSession) {
   confirm.ask(
-    { title: copy.notifyTitle, message: `${session.title}. ${copy.notifyMessage}`, confirmLabel: 'Sí, avisar' },
+    {
+      title: copy.notifyTitle,
+      message: `${session.title}. ${copy.notifyMessage}`,
+      confirmLabel: 'Sí, avisar',
+    },
     () => live.notify(session),
   )
 }
 
 function askDelete(session: LiveSession) {
   confirm.ask(
-    { title: copy.deleteTitle, message: `${session.title}. ${copy.deleteMessage}`, confirmLabel: 'Sí, borrar', danger: true },
+    {
+      title: copy.deleteTitle,
+      message: `${session.title}. ${copy.deleteMessage}`,
+      confirmLabel: 'Sí, borrar',
+      danger: true,
+    },
     () => live.remove(session),
   )
 }
@@ -60,7 +69,9 @@ onMounted(async () => {
     <div class="adm-toolbar">
       <select v-model="productId" aria-label="Curso">
         <option value="" disabled>Elige un curso</option>
-        <option v-for="course in courses" :key="course.id" :value="course.id">{{ course.title }}</option>
+        <option v-for="course in courses" :key="course.id" :value="course.id">
+          {{ course.title }}
+        </option>
       </select>
     </div>
 
@@ -87,7 +98,9 @@ onMounted(async () => {
           <AdminDatum label="Enlace de Meet" wide>
             <a :href="session.meetUrl" target="_blank" rel="noopener">{{ session.meetUrl }}</a>
           </AdminDatum>
-          <AdminDatum v-if="session.description" label="Descripción" wide>{{ session.description }}</AdminDatum>
+          <AdminDatum v-if="session.description" label="Descripción" wide>{{
+            session.description
+          }}</AdminDatum>
           <AdminDatum label="Grabación">
             {{ session.recordingLesson ? 'Enlazada a una lección' : 'Sin grabación' }}
           </AdminDatum>
@@ -101,7 +114,11 @@ onMounted(async () => {
               <i class="fa-solid fa-pen"></i>
               Editar
             </button>
-            <button class="adm-icon-btn adm-icon-btn--danger" aria-label="Borrar clase" @click="askDelete(session)">
+            <button
+              class="adm-icon-btn adm-icon-btn--danger"
+              aria-label="Borrar clase"
+              @click="askDelete(session)"
+            >
               <i class="fa-solid fa-trash"></i>
             </button>
           </template>
