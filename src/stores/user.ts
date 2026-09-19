@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { authService } from '@/services/auth.service'
+import { authService, type ProfilePayload, type RegisterPayload } from '@/services/auth.service'
 import type { SessionUser } from '@/types'
 
 const TOKEN_KEY = 'access_token'
@@ -30,6 +30,35 @@ export const useUserStore = defineStore('user', {
       const { token, user } = await authService.login(email, password)
       this.setSession(token, user)
       return user
+    },
+
+    async register(payload: RegisterPayload): Promise<SessionUser> {
+      const { token, user } = await authService.register(payload)
+      this.setSession(token, user)
+      return user
+    },
+
+    async updateProfile(payload: ProfilePayload): Promise<SessionUser> {
+      const user = await authService.updateProfile(payload)
+      // Se mezcla por si el API devuelve solo los campos editados.
+      this.user = { ...(this.user as SessionUser), ...user }
+      return this.user
+    },
+
+    /** Siempre resuelve bien: el API no revela si el correo existe. */
+    async forgot(email: string): Promise<void> {
+      await authService.forgotPassword(email)
+    },
+
+    /** Guarda la contraseña nueva y deja la sesión iniciada. */
+    async reset(token: string, password: string): Promise<SessionUser> {
+      const session = await authService.resetPassword(token, password)
+      this.setSession(session.token, session.user)
+      return session.user
+    },
+
+    async changePassword(current: string, next: string): Promise<void> {
+      await authService.changePassword(current, next)
     },
 
     /** Recupera la sesión desde el token guardado, verificándola con el API. */
