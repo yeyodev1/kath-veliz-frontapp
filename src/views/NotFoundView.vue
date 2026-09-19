@@ -9,7 +9,8 @@ const copy = site.notFound
   <section class="not-found">
     <p class="not-found__code">{{ copy.code }}</p>
     <h1 class="not-found__title">
-      {{ copy.title.before }}<em>{{ copy.title.em }}</em>{{ copy.title.after }}
+      {{ copy.title.before }}<em>{{ copy.title.em }}</em
+      >{{ copy.title.after }}
     </h1>
     <p class="not-found__text">{{ copy.text }}</p>
     <div class="not-found__actions">
