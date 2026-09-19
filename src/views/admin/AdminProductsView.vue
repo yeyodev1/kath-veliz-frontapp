@@ -39,7 +39,11 @@ async function togglePublish(product: AdminProduct) {
     const next = !product.isPublished
     await adminProductsService.updateProduct(product.id, { isPublished: next })
     product.isPublished = next
-    toast.success(next ? 'Producto publicado: ya se ve en la web.' : 'Producto despublicado: ya no se ve en la web.')
+    toast.success(
+      next
+        ? 'Producto publicado: ya se ve en la web.'
+        : 'Producto despublicado: ya no se ve en la web.',
+    )
   } catch (err) {
     toast.error((err as ApiError).message || adminCopy.genericError)
   }
@@ -47,7 +51,12 @@ async function togglePublish(product: AdminProduct) {
 
 function askDelete(product: AdminProduct) {
   confirm.ask(
-    { title: copy.deleteTitle, message: `${product.title}. ${copy.deleteMessage}`, confirmLabel: 'Sí, borrar', danger: true },
+    {
+      title: copy.deleteTitle,
+      message: `${product.title}. ${copy.deleteMessage}`,
+      confirmLabel: 'Sí, borrar',
+      danger: true,
+    },
     async () => {
       await adminProductsService.deleteProduct(product.id)
       toast.success('Producto borrado.')
