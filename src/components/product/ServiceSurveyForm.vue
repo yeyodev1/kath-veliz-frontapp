@@ -11,7 +11,9 @@ import type { ProductDetail } from '@/types/catalog'
 // Kath las edita desde el panel.
 const props = defineProps<{ product: ProductDetail }>()
 
-const { contact, answers, errors, sending, done, failure, submit } = useSurveyForm(toRef(props, 'product'))
+const { contact, answers, errors, sending, done, failure, submit } = useSurveyForm(
+  toRef(props, 'product'),
+)
 const copy = site.product.service
 </script>
 
