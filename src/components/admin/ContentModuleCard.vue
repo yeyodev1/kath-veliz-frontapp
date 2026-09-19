@@ -24,16 +24,30 @@ const emit = defineEmits<{
         <h3>{{ module.title }}</h3>
       </div>
       <div class="module__tools">
-        <button class="adm-icon-btn" :disabled="busy || index === 0" aria-label="Subir módulo" @click="emit('move', -1)">
+        <button
+          class="adm-icon-btn"
+          :disabled="busy || index === 0"
+          aria-label="Subir módulo"
+          @click="emit('move', -1)"
+        >
           <i class="fa-solid fa-arrow-up"></i>
         </button>
-        <button class="adm-icon-btn" :disabled="busy || index === total - 1" aria-label="Bajar módulo" @click="emit('move', 1)">
+        <button
+          class="adm-icon-btn"
+          :disabled="busy || index === total - 1"
+          aria-label="Bajar módulo"
+          @click="emit('move', 1)"
+        >
           <i class="fa-solid fa-arrow-down"></i>
         </button>
         <button class="adm-icon-btn" aria-label="Editar módulo" @click="emit('edit')">
           <i class="fa-solid fa-pen"></i>
         </button>
-        <button class="adm-icon-btn adm-icon-btn--danger" aria-label="Borrar módulo" @click="emit('remove')">
+        <button
+          class="adm-icon-btn adm-icon-btn--danger"
+          aria-label="Borrar módulo"
+          @click="emit('remove')"
+        >
           <i class="fa-solid fa-trash"></i>
         </button>
       </div>
@@ -52,7 +66,11 @@ const emit = defineEmits<{
             <AdminBadge v-else tone="warning">{{ adminCopy.content.videoNone }}</AdminBadge>
             <AdminBadge v-if="!lesson.isPublished" tone="neutral">Borrador</AdminBadge>
             <AdminBadge v-if="lesson.isFreePreview" tone="info">Vista previa gratis</AdminBadge>
-            <AdminBadge v-if="lesson.attachments?.length" tone="neutral" icon="fa-solid fa-paperclip">
+            <AdminBadge
+              v-if="lesson.attachments?.length"
+              tone="neutral"
+              icon="fa-solid fa-paperclip"
+            >
               {{ lesson.attachments.length }}
             </AdminBadge>
           </span>
@@ -74,7 +92,11 @@ const emit = defineEmits<{
           >
             <i class="fa-solid fa-arrow-down"></i>
           </button>
-          <button class="adm-icon-btn adm-icon-btn--danger" aria-label="Borrar lección" @click="emit('removeLesson', lesson)">
+          <button
+            class="adm-icon-btn adm-icon-btn--danger"
+            aria-label="Borrar lección"
+            @click="emit('removeLesson', lesson)"
+          >
             <i class="fa-solid fa-trash"></i>
           </button>
         </div>
