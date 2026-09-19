@@ -112,6 +112,7 @@ function accessLabel(days: number): string {
     @include flex(row, center, flex-start, 0.5rem);
     font-size: $text-sm;
     color: $ink-soft;
+    min-height: 2.75rem;
     padding: 0.4rem 0;
     @include transition(color);
 
