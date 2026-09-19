@@ -29,7 +29,9 @@ const {
       <h1 class="account__title">{{ userStore.user?.name || userStore.user?.email }}</h1>
       <p class="account__email">{{ userStore.user?.email }}</p>
       <div class="account__actions">
-        <BaseButton to="/mis-cursos" icon="fa-solid fa-graduation-cap">{{ copy.myCourses }}</BaseButton>
+        <BaseButton to="/mis-cursos" icon="fa-solid fa-graduation-cap">{{
+          copy.myCourses
+        }}</BaseButton>
         <BaseButton variant="ghost" icon="fa-solid fa-right-from-bracket" @click="logout">
           {{ copy.logout }}
         </BaseButton>
