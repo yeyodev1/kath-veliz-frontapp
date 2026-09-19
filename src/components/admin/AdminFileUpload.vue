@@ -25,18 +25,39 @@ async function onPick(event: Event) {
     <div v-if="file" class="file-upload__current">
       <i class="fa-solid fa-file-circle-check"></i>
       <span class="file-upload__name">{{ file.filename || 'Archivo subido' }}</span>
-      <button type="button" class="adm-icon-btn adm-icon-btn--danger" aria-label="Quitar archivo" @click="file = null">
+      <button
+        type="button"
+        class="adm-icon-btn adm-icon-btn--danger"
+        aria-label="Quitar archivo"
+        @click="file = null"
+      >
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
 
-    <label class="btn btn--ghost adm-btn-sm file-upload__pick" :class="{ 'file-upload__pick--busy': uploading }">
+    <label
+      class="btn btn--ghost adm-btn-sm file-upload__pick"
+      :class="{ 'file-upload__pick--busy': uploading }"
+    >
       <i class="fa-solid fa-arrow-up-from-bracket"></i>
       {{ uploading ? `Subiendo… ${progress}%` : file ? 'Reemplazar archivo' : 'Subir archivo' }}
-      <input type="file" :accept="accept" class="visually-hidden" :disabled="uploading" @change="onPick" />
+      <input
+        type="file"
+        :accept="accept"
+        class="visually-hidden"
+        :disabled="uploading"
+        @change="onPick"
+      />
     </label>
 
-    <div v-if="uploading" class="adm-progress" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
+    <div
+      v-if="uploading"
+      class="adm-progress"
+      role="progressbar"
+      :aria-valuenow="progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
       <div class="adm-progress__bar" :style="{ width: `${progress}%` }"></div>
     </div>
 
