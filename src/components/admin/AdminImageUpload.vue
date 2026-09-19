@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { adminUploadsService } from '@/services/adminUploads.service'
+import { adminUploadsService, UPLOAD_LIMITS_MB } from '@/services/adminUploads.service'
 import { useFileUpload } from '@/composables/admin/useFileUpload'
 import type { UploadedImage } from '@/types/admin'
 
@@ -10,8 +10,10 @@ const { uploading, progress, upload } = useFileUpload((file, onProgress) =>
   adminUploadsService.image(file, onProgress),
 )
 
+// Las fotos grandes se reducen en el navegador antes de subir; por eso el tope
+// del original es generoso y el real (10 MB) se revisa después de reducirla.
 async function onPick(event: Event) {
-  const result = await upload(event, 10)
+  const result = await upload(event, UPLOAD_LIMITS_MB.imageOriginal)
   if (result) image.value = result
 }
 </script>
@@ -32,7 +34,10 @@ async function onPick(event: Event) {
           :class="{ 'image-upload__pick--busy': uploading }"
         >
           <i class="fa-solid fa-arrow-up-from-bracket"></i>
-          {{ image ? 'Cambiar imagen' : 'Subir imagen' }}
+          <template v-if="uploading">
+            {{ progress ? `Subiendo… ${progress}%` : 'Preparando imagen…' }}
+          </template>
+          <template v-else>{{ image ? 'Cambiar imagen' : 'Subir imagen' }}</template>
           <input
             type="file"
             accept="image/*"
