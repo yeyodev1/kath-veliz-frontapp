@@ -15,7 +15,8 @@ import { formatDateEc, refProduct } from '@/utils/adminFormat'
 import type { AdminCoupon } from '@/types/admin'
 
 const copy = adminCopy.coupons
-const { coupons, loading, error, saving, form, load, open, save, toggleActive, remove } = useCoupons()
+const { coupons, loading, error, saving, form, load, open, save, toggleActive, remove } =
+  useCoupons()
 const { products, load: loadProducts, titleOf } = useProductOptions()
 const confirm = useConfirm()
 
@@ -27,7 +28,12 @@ function productLabel(coupon: AdminCoupon): string {
 
 function askDelete(coupon: AdminCoupon) {
   confirm.ask(
-    { title: copy.deleteTitle, message: `${coupon.code}. ${copy.deleteMessage}`, confirmLabel: 'Sí, borrar', danger: true },
+    {
+      title: copy.deleteTitle,
+      message: `${coupon.code}. ${copy.deleteMessage}`,
+      confirmLabel: 'Sí, borrar',
+      danger: true,
+    },
     () => remove(coupon),
   )
 }
@@ -68,9 +74,12 @@ onMounted(() => {
           </template>
 
           <AdminDatum label="Aplica a">{{ productLabel(coupon) }}</AdminDatum>
-          <AdminDatum label="Vence">{{ coupon.expiresAt ? formatDateEc(coupon.expiresAt) : 'No vence' }}</AdminDatum>
+          <AdminDatum label="Vence">{{
+            coupon.expiresAt ? formatDateEc(coupon.expiresAt) : 'No vence'
+          }}</AdminDatum>
           <AdminDatum label="Usos">
-            {{ coupon.usedCount || 0 }}{{ coupon.maxUses ? ` de ${coupon.maxUses}` : ' (sin límite)' }}
+            {{ coupon.usedCount || 0
+            }}{{ coupon.maxUses ? ` de ${coupon.maxUses}` : ' (sin límite)' }}
           </AdminDatum>
 
           <template #actions>
@@ -81,7 +90,11 @@ onMounted(() => {
             <button class="btn btn--ghost adm-btn-sm" @click="toggleActive(coupon)">
               {{ coupon.isActive ? 'Desactivar' : 'Activar' }}
             </button>
-            <button class="adm-icon-btn adm-icon-btn--danger" aria-label="Borrar cupón" @click="askDelete(coupon)">
+            <button
+              class="adm-icon-btn adm-icon-btn--danger"
+              aria-label="Borrar cupón"
+              @click="askDelete(coupon)"
+            >
               <i class="fa-solid fa-trash"></i>
             </button>
           </template>
@@ -89,7 +102,13 @@ onMounted(() => {
       </div>
     </AdminState>
 
-    <CouponForm :form="form" :products="products" :saving="saving" @close="form.open = false" @save="save" />
+    <CouponForm
+      :form="form"
+      :products="products"
+      :saving="saving"
+      @close="form.open = false"
+      @save="save"
+    />
     <BaseModal v-bind="confirm.modal" @confirm="confirm.accept" @cancel="confirm.cancel" />
   </section>
 </template>
