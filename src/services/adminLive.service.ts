@@ -18,9 +18,9 @@ class AdminLiveService extends AdminAPIBase {
     return this.remove(`admin/live-sessions/${id}`)
   }
 
-  /** Correo a todas las personas con acceso vigente al producto. Devuelve cuántos salieron. */
-  notify(id: string): Promise<{ sent: number }> {
-    return this.create<{ sent: number }>(`admin/live-sessions/${id}/notify`)
+  /** Correo a todas las personas con acceso vigente al producto. Devuelve cuántos salieron y cuántos no. */
+  notify(id: string): Promise<{ sent: number; failed?: number }> {
+    return this.create<{ sent: number; failed?: number }>(`admin/live-sessions/${id}/notify`)
   }
 }
 
