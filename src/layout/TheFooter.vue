@@ -118,11 +118,13 @@ const socials = [
   }
 
   &__col {
-    @include flex(column, flex-start, flex-start, 0.2rem);
+    @include flex(column, flex-start, flex-start, 0);
     flex: 0.6 1 160px;
     font-size: $text-sm;
 
     a {
+      @include flex(row, center, flex-start);
+      min-height: 2.75rem;
       padding: 0.35rem 0;
       color: rgba($paper, 0.86);
       @include transition(color);
