@@ -35,9 +35,19 @@ export interface BuyerUser {
   accountType: string
 }
 
+/** Lo que POST /orders necesita del comprador, ya validado y normalizado. */
 export interface BuyerData {
   phone: string
   documentId: string
+}
+
+/** GET /service-requests/:id/prefill — solo existe para solicitudes aprobadas. */
+export interface ServiceRequestPrefill {
+  name: string
+  email: string
+  phone: string
+  productSlug: string
+  status: 'approved'
 }
 
 export interface CouponResult {
@@ -62,6 +72,8 @@ export interface OrderSummary {
   totalCents: number
   status?: 'pending' | 'paid' | 'canceled' | 'failed'
   clientTransactionId?: string
+  // Solo en asesorías: sirve para volver al checkout con el mismo enlace de pago.
+  serviceRequest?: string | null
 }
 
 /** Configuración de la Cajita: llega completa del backend, nunca se quema acá. */
