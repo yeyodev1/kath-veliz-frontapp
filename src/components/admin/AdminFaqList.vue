@@ -10,8 +10,18 @@ const faqs = defineModel<ProductFaq[]>({ required: true })
 
     <div v-for="(faq, index) in faqs" :key="index" class="faq-list__item">
       <div class="faq-list__fields">
-        <input v-model="faq.question" type="text" placeholder="Pregunta" :aria-label="`Pregunta ${index + 1}`" />
-        <textarea v-model="faq.answer" rows="2" placeholder="Respuesta" :aria-label="`Respuesta ${index + 1}`"></textarea>
+        <input
+          v-model="faq.question"
+          type="text"
+          placeholder="Pregunta"
+          :aria-label="`Pregunta ${index + 1}`"
+        />
+        <textarea
+          v-model="faq.answer"
+          rows="2"
+          placeholder="Respuesta"
+          :aria-label="`Respuesta ${index + 1}`"
+        ></textarea>
       </div>
       <button
         type="button"
