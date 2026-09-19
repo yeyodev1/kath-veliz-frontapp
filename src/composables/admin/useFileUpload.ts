@@ -1,10 +1,11 @@
 import { ref } from 'vue'
 import { useToastStore } from '@/stores/toast'
 import { adminCopy } from '@/config/admin'
+import { tooBigMessage } from '@/services/adminUploads.service'
 import type { ApiError } from '@/types'
 
 /**
- * Estado de una subida a Cloudinary (vía backend): progreso y errores en un
+ * Estado de una subida directa a Cloudinary: progreso y errores en un
  * solo lugar para la portada, los descargables y los adjuntos.
  */
 export function useFileUpload<T>(
@@ -22,7 +23,7 @@ export function useFileUpload<T>(
     if (!file) return null
 
     if (file.size > maxMb * 1024 * 1024) {
-      toast.error(`El archivo pesa más de ${maxMb} MB. Elige uno más liviano.`)
+      toast.error(tooBigMessage(file.size, maxMb))
       return null
     }
 
