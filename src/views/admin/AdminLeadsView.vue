@@ -47,7 +47,9 @@ onMounted(list.load)
     <div class="adm-toolbar">
       <select v-model="list.filters.kind" aria-label="Filtrar por tipo">
         <option value="">Todos los tipos</option>
-        <option v-for="(label, value) in leadKindLabels" :key="value" :value="value">{{ label }}</option>
+        <option v-for="(label, value) in leadKindLabels" :key="value" :value="value">
+          {{ label }}
+        </option>
       </select>
       <input
         v-model="list.filters.source"
@@ -82,7 +84,9 @@ onMounted(list.load)
             {{ refProduct(lead.product).title }}
           </AdminDatum>
           <AdminDatum v-if="lead.couponCode" label="Cupón">{{ lead.couponCode }}</AdminDatum>
-          <AdminDatum v-if="lead.createdAt" label="Fecha">{{ formatDateEc(lead.createdAt) }}</AdminDatum>
+          <AdminDatum v-if="lead.createdAt" label="Fecha">{{
+            formatDateEc(lead.createdAt)
+          }}</AdminDatum>
         </AdminRecord>
       </div>
     </AdminState>
