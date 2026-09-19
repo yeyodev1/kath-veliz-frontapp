@@ -83,7 +83,10 @@ const describedBy = computed(() =>
         :aria-pressed="revealed"
         @click="revealed = !revealed"
       >
-        <i :class="revealed ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'" aria-hidden="true"></i>
+        <i
+          :class="revealed ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'"
+          aria-hidden="true"
+        ></i>
       </button>
     </div>
 
