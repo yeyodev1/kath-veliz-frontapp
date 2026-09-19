@@ -210,7 +210,12 @@ export const site = {
       service: 'Conoce más',
       free: 'Lo quiero gratis',
     },
-    badges: { waitlist: 'Lista de espera', closed: 'Inscripciones cerradas', free: 'Gratis' },
+    badges: {
+      waitlist: 'Lista de espera',
+      closed: 'Inscripciones cerradas',
+      free: 'Gratis',
+      waitlistPerk: '10% de descuento',
+    },
     sections: {
       highlights: 'Qué vas a recibir',
       audience: 'Es para ti si…',
