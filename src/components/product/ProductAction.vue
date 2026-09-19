@@ -1,21 +1,27 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { site } from '@/config/site'
 import { formatPrice } from '@/utils/format'
+import { useOwnedProduct } from '@/composables/useOwnedProduct'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import LeadForm from '@/components/ui/LeadForm.vue'
 import ServiceSurveyForm from './ServiceSurveyForm.vue'
+import ProductBuyBar from './ProductBuyBar.vue'
 import type { ProductDetail } from '@/types/catalog'
 
 // La tarjeta de acción es lo único que cambia de verdad entre productos:
 // cerrado → aviso; gratis → nombre+correo; asesoría → encuesta;
-// lista de espera → correo con cupón; abierto → comprar.
+// lista de espera → correo con cupón; abierto → comprar; ya comprado → entrar.
 const props = defineProps<{ product: ProductDetail }>()
 
 const copy = site.product
+const { owned } = useOwnedProduct(props.product.slug)
+// El botón principal: cuando sale de pantalla aparece la barra fija de compra.
+const cta = ref<HTMLElement | null>(null)
 
-const mode = computed<'closed' | 'free' | 'service' | 'waitlist' | 'buy'>(() => {
+const mode = computed<'owned' | 'closed' | 'free' | 'service' | 'waitlist' | 'buy'>(() => {
   const p = props.product
+  if (owned.value && (p.type === 'course' || p.type === 'download')) return 'owned'
   if (p.saleMode === 'closed') return 'closed'
   if (p.type === 'free') return 'free'
   if (p.type === 'service') return 'service'
@@ -23,12 +29,20 @@ const mode = computed<'closed' | 'free' | 'service' | 'waitlist' | 'buy'>(() => 
   return 'buy'
 })
 
-const showPrice = computed(() => mode.value !== 'free' && props.product.priceCents > 0)
+const showPrice = computed(
+  () => mode.value !== 'free' && mode.value !== 'owned' && props.product.priceCents > 0,
+)
 const heading = computed(() => {
   if (mode.value === 'buy') return ''
-  return copy[mode.value].title
+  return mode.value === 'owned' ? copy.buy.ownedTitle : copy[mode.value].title
 })
-const text = computed(() => (mode.value === 'buy' ? '' : copy[mode.value].text))
+const text = computed(() => {
+  if (mode.value === 'buy') return ''
+  return mode.value === 'owned' ? copy.buy.ownedText : copy[mode.value].text
+})
+const ownedTo = computed(() =>
+  props.product.type === 'course' ? `/aprender/${props.product.slug}` : '/mis-cursos',
+)
 </script>
 
 <template>
@@ -49,13 +63,21 @@ const text = computed(() => (mode.value === 'buy' ? '' : copy[mode.value].text))
     <h2 v-if="heading" class="action__title">{{ heading }}</h2>
     <p v-if="text" class="action__text">{{ text }}</p>
 
-    <template v-if="mode === 'buy'">
-      <BaseButton :to="`/checkout/${product.slug}`" block icon-right="fa-solid fa-arrow-right">
-        {{ copy.buy.cta }}
-      </BaseButton>
+    <BaseButton v-if="mode === 'owned'" :to="ownedTo" block icon="fa-solid fa-play">
+      {{ product.type === 'course' ? copy.buy.ownedCourse : copy.buy.ownedDownload }}
+    </BaseButton>
+
+    <template v-else-if="mode === 'buy'">
+      <div ref="cta" class="action__cta">
+        <BaseButton :to="`/checkout/${product.slug}`" block icon-right="fa-solid fa-arrow-right">
+          {{ copy.buy.ctaNow }} · {{ formatPrice(product.priceCents) }}
+        </BaseButton>
+      </div>
       <p class="action__note">
         <i class="fa-solid fa-lock" aria-hidden="true"></i> {{ copy.buy.note }}
       </p>
+      <p class="action__note">{{ copy.buy.steps }}</p>
+      <ProductBuyBar :product="product" :target="cta" />
     </template>
 
     <LeadForm
@@ -137,6 +159,12 @@ const text = computed(() => (mode.value === 'buy' ? '' : copy[mode.value].text))
   &__text {
     font-size: $text-sm;
     color: $ink-soft;
+  }
+
+  // Botón principal de 52 px: es el toque más importante de la página.
+  &__cta :deep(.btn) {
+    min-height: 3.25rem;
+    font-size: 1rem;
   }
 
   &__note {
