@@ -295,3 +295,18 @@ label {
     transition-duration: 0.01ms !important;
   }
 }
+
+// v-reveal (composables/useReveal.ts): entrada suave al hacer scroll. La clase
+// solo se pone si el visitante no pidió reducir el movimiento.
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s $ease;
+
+  &--in {
+    opacity: 1;
+    transform: none;
+  }
+}
