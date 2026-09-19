@@ -13,7 +13,11 @@ const { uploading, progress, upload } = useFileUpload((file, onProgress) =>
 async function onPick(event: Event) {
   const result = await upload(event, 100)
   if (!result) return
-  attachments.value.push({ name: result.filename || 'Archivo', url: result.url, publicId: result.publicId })
+  attachments.value.push({
+    name: result.filename || 'Archivo',
+    url: result.url,
+    publicId: result.publicId,
+  })
 }
 </script>
 
@@ -21,7 +25,11 @@ async function onPick(event: Event) {
   <div class="attachments">
     <span class="attachments__label">Archivos adjuntos</span>
 
-    <div v-for="(file, index) in attachments" :key="file.publicId || index" class="attachments__item">
+    <div
+      v-for="(file, index) in attachments"
+      :key="file.publicId || index"
+      class="attachments__item"
+    >
       <i class="fa-solid fa-paperclip"></i>
       <input v-model="file.name" type="text" :aria-label="`Nombre del adjunto ${index + 1}`" />
       <button
@@ -34,12 +42,17 @@ async function onPick(event: Event) {
       </button>
     </div>
 
-    <label class="btn btn--ghost adm-btn-sm attachments__pick" :class="{ 'attachments__pick--busy': uploading }">
+    <label
+      class="btn btn--ghost adm-btn-sm attachments__pick"
+      :class="{ 'attachments__pick--busy': uploading }"
+    >
       <i class="fa-solid fa-plus"></i>
       {{ uploading ? `Subiendo… ${progress}%` : 'Agregar archivo' }}
       <input type="file" class="visually-hidden" :disabled="uploading" @change="onPick" />
     </label>
-    <p class="adm-field__hint">El nombre es lo que ve el alumno. Guarda la lección para conservar los cambios.</p>
+    <p class="adm-field__hint">
+      El nombre es lo que ve el alumno. Guarda la lección para conservar los cambios.
+    </p>
   </div>
 </template>
 
