@@ -171,6 +171,7 @@ $learn-gutter: 1rem;
 
   &__back {
     @include flex(row, center, flex-start, 0.45rem);
+    min-height: 2.75rem;
     padding-block: 0.4rem;
     font-size: $text-sm;
     font-weight: 600;
