@@ -5,6 +5,7 @@ import type {
   CouponResult,
   CreateOrderPayload,
   CreateOrderResponse,
+  ServiceRequestPrefill,
   StudentProduct,
 } from '@/types/student'
 
@@ -28,6 +29,14 @@ class OrderService extends APIBase {
     const { data } = await this.put<BuyerUser | { user: BuyerUser }>('auth/me', payload)
     // /auth/me del scaffold envuelve en { user }; el contrato lo devuelve desnudo.
     return 'user' in data ? data.user : data
+  }
+
+  /** Datos de la solicitud de asesoría aprobada, para no pedirlos otra vez. */
+  async requestPrefill(id: string): Promise<ServiceRequestPrefill> {
+    const { data } = await this.get<ServiceRequestPrefill>(
+      `service-requests/${encodeURIComponent(id)}/prefill`,
+    )
+    return data
   }
 
   async create(payload: CreateOrderPayload): Promise<CreateOrderResponse> {
