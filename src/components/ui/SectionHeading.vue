@@ -18,7 +18,8 @@ withDefaults(
   <header class="heading" :class="[`heading--${align}`, { 'heading--dark': onDark }]">
     <p v-if="eyebrow" class="heading__eyebrow">{{ eyebrow }}</p>
     <component :is="`h${level}`" class="heading__title" :class="`heading__title--h${level}`">
-      {{ title.before }}<em>{{ title.em }}</em>{{ title.after }}
+      {{ title.before }}<em>{{ title.em }}</em
+      >{{ title.after }}
     </component>
     <p v-if="text" class="heading__text">{{ text }}</p>
   </header>
