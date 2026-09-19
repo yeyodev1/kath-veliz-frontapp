@@ -57,7 +57,11 @@ export class AdminAPIBase extends APIBase {
     return toPage<T>(await this.fetch<unknown>(endpoint, query))
   }
 
-  protected async create<T>(endpoint: string, body: unknown = {}, config?: AxiosRequestConfig): Promise<T> {
+  protected async create<T>(
+    endpoint: string,
+    body: unknown = {},
+    config?: AxiosRequestConfig,
+  ): Promise<T> {
     const { data } = await this.post<unknown>(endpoint, body, undefined, config)
     return normalizeIds<T>(data)
   }
