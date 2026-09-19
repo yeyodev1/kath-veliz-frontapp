@@ -1,0 +1,103 @@
+// Ajustes sobre la Cajita de Pagos de Payphone. Se importa solo desde
+// usePayphoneBox.ts (no desde global.scss): fuera del checkout no hace falta.
+//
+// La hoja de Payphone es un Bootstrap con prefijo `ppb-` y llega DESPUÉS de la
+// nuestra, así que acá se gana por especificidad (html:root, #pp-button) y no
+// por orden. Con moderación: el formulario sigue siendo reconocible como Payphone.
+
+// 1. Su CSS trae un `body { font-family, color, background… }` atado a sus
+//    variables, que le cambia la cara a TODO el sitio apenas carga (y el SPA
+//    no vuelve a recargar). Se devuelven esas variables a nuestros tokens.
+html:root {
+  --ppb-bs-body-font-family: #{$font-principal};
+  --ppb-bs-body-font-size: #{$text-base};
+  --ppb-bs-body-font-weight: 400;
+  --ppb-bs-body-line-height: 1.65;
+  --ppb-bs-body-color: #{$ink};
+  --ppb-bs-body-bg: #{$paper};
+}
+
+// 2. Dentro de la Cajita: superficie blanca, radios y fuente del proyecto.
+#pp-button {
+  --ppb-bs-body-bg: #{$surface};
+  --ppb-bs-body-font-size: 1rem;
+  --ppb-bs-body-line-height: 1.5;
+  --ppb-bs-border-radius: #{$radius-sm};
+  --ppb-bs-border-color: #{$line};
+  --ppb-bs-btn-font-family: #{$font-principal};
+
+  width: 100%;
+  min-width: 0;
+  font-family: $font-principal;
+  color: $ink;
+
+  // Payphone fija 414px de base: en un teléfono de 360 se desborda.
+  .payment-box {
+    flex-basis: 100% !important;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0.25rem 0 0;
+    border-radius: $radius-sm;
+    background-color: transparent;
+  }
+
+  .ppb-container,
+  .ppb-vw-100 {
+    width: 100% !important;
+    max-width: 100%;
+    padding-inline: 0;
+  }
+
+  .ppb-row {
+    margin-inline: 0;
+  }
+
+  .ppb-text-header {
+    font-family: $font-display;
+    font-size: $text-xl;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: $ink;
+  }
+
+  .ppb-p,
+  .ppb-label,
+  .ppb-form-check-label,
+  .ppb-text-reference {
+    font-family: $font-principal;
+  }
+
+  .ppb-form-control,
+  .ppb-form-select,
+  .ppb-input-group-text {
+    font-family: $font-principal;
+    // El radio va por --ppb-bs-border-radius: fijarlo acá rompería las esquinas
+    // unidas de sus input-group. 16px mínimo: con menos, iOS hace zoom al enfocar el campo.
+    font-size: 1rem;
+  }
+
+  .ppb-form-control:focus,
+  .ppb-form-select:focus {
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba($accent, 0.15);
+  }
+
+  .ppb-btn-pay {
+    width: 100%;
+    font-family: $font-principal;
+    font-weight: 600;
+    border-radius: $radius-pill !important;
+  }
+
+  .ppb-card {
+    border-radius: $radius-md;
+    border-color: $line;
+  }
+
+  @include from('md') {
+    .payment-box {
+      padding: 0.5rem 0.5rem 0;
+    }
+  }
+}
