@@ -1,6 +1,9 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { site } from '@/config/site'
+import { publicRoutes } from './public.routes'
+import { studentRoutes } from './student.routes'
+import { adminRoutes } from './admin.routes'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -21,6 +24,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/AccountView.vue'),
     meta: { title: 'Mi cuenta', requiresAuth: true },
   },
+  ...publicRoutes,
+  ...studentRoutes,
+  ...adminRoutes,
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
@@ -51,6 +57,11 @@ router.beforeEach(async (to) => {
 
   if (to.meta.requiresAuth && !userStore.isAuthenticated) {
     return { name: 'Login', query: { next: to.fullPath }, replace: true }
+  }
+
+  // El panel es solo para la cuenta de administración; un alumno vuelve a su área.
+  if (to.meta.requiresAdmin && userStore.user?.accountType !== 'admin') {
+    return { name: 'Home', replace: true }
   }
 
   if (to.meta.guestOnly && userStore.isAuthenticated) {
