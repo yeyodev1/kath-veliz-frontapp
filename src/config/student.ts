@@ -117,6 +117,8 @@ export const studentCopy = {
     tutorial: 'Ver tutorial',
     progress: (done: number, total: number) => `${done} de ${total} clases`,
     serviceNote: 'Kath coordina tus sesiones por correo y WhatsApp.',
+    comingSoon: 'Las clases se publican pronto. Te aviso por correo apenas estén.',
+    enter: 'Entrar al curso',
   },
 
   learn: {
