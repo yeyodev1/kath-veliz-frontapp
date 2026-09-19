@@ -38,7 +38,11 @@ async function submit() {
 </script>
 
 <template>
-  <AuthShell :eyebrow="copy.eyebrow" :title="copy.title" :text="isCheckout ? copy.forCheckout : copy.text">
+  <AuthShell
+    :eyebrow="copy.eyebrow"
+    :title="copy.title"
+    :text="isCheckout ? copy.forCheckout : copy.text"
+  >
     <form class="form" @submit.prevent="submit">
       <BaseField
         id="login-email"
@@ -67,7 +71,9 @@ async function submit() {
 
       <p class="form__switch">
         {{ copy.noAccount }}
-        <RouterLink :to="{ name: 'Register', query: nextQuery }" class="link">{{ copy.register }}</RouterLink>
+        <RouterLink :to="{ name: 'Register', query: nextQuery }" class="link">{{
+          copy.register
+        }}</RouterLink>
       </p>
     </form>
   </AuthShell>
