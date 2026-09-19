@@ -46,7 +46,8 @@ const number = computed(() => String((props.index ?? 0) + 1).padStart(2, '0'))
             <template v-if="isFree">{{ labels.badges.free }}</template>
             <template v-else-if="product.type !== 'service' || product.priceCents">
               <s v-if="product.compareAtPriceCents" class="card__compare">
-                <span class="visually-hidden">Antes </span>{{ formatPrice(product.compareAtPriceCents) }}
+                <span class="visually-hidden">Antes </span
+                >{{ formatPrice(product.compareAtPriceCents) }}
               </s>
               {{ formatPrice(product.priceCents) }}
             </template>
