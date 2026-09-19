@@ -29,7 +29,9 @@ const socials = [
 
       <nav class="footer__col" :aria-label="copy.explore">
         <h2 class="footer__heading">{{ copy.explore }}</h2>
-        <RouterLink v-for="link in site.nav" :key="link.to" :to="link.to">{{ link.label }}</RouterLink>
+        <RouterLink v-for="link in site.nav" :key="link.to" :to="link.to">{{
+          link.label
+        }}</RouterLink>
         <a v-if="site.whatsapp" :href="whatsappLink()" target="_blank" rel="noopener">WhatsApp</a>
         <a v-if="site.email" :href="`mailto:${site.email}`">{{ site.email }}</a>
       </nav>
