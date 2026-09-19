@@ -1,34 +1,44 @@
-// Paleta de Kath Veliz. Semántica primero: los componentes hablan de tinta,
-// papel y acento, no de "rosa" o "gris 700".
+// Paleta de Kath Veliz, sacada de su logo: verde bosque sobre papel crema.
+// Semántica primero: los componentes hablan de tinta, papel y acento, no de
+// "verde" o "gris 700". El barro (clay) es el único color cálido de contraste
+// y se usa con cuentagotas: una palabra en cursiva, un sello, un subrayado.
 @use 'sass:color';
 
-// Acento de marca
-$accent: #e6285c;
-$accent-deep: color.adjust($accent, $lightness: -12%);
-$accent-soft: color.mix($accent, #ffffff, 14%);
+// Acento de marca — el verde del logo
+$accent: #2f4a3c;
+$accent-deep: #1f3329;
+$accent-soft: #dde6df;
+$sage: #5d8572; // el verde claro de "tu coach de finanzas"
+$sage-soft: #c9d8cf;
+
+// Contrapunto cálido
+$clay: #b4623c; // solo titulares grandes y adornos (3.9:1 sobre papel)
+$clay-deep: #8f4626; // texto pequeño en barro (AA sobre papel y arena)
+$clay-soft: #f0dccf;
+$butter: #ecdcae; // resaltador: fondos de sello sobre verde
 
 // Superficies
-$paper: #fdfcfa; // fondo base
-$surface: #ffffff; // superficies elevadas
-$sand: #f1ece6; // bloques suaves
-$line: #e7e1d9; // bordes
+$paper: #f6f1ea; // fondo base, el crema del logo
+$surface: #fffdf9; // superficies elevadas
+$sand: #ece4d8; // bloques suaves
+$line: #ddd3c5; // bordes
 
 // Texto
-$ink: #191423; // texto principal
-$ink-soft: #4a4552; // texto secundario
-$ink-muted: #8a8590; // terciario / labels
+$ink: #1b2620; // texto principal: negro verdoso
+$ink-soft: #46524b; // texto secundario
+$ink-muted: #667069; // terciario / labels (4.9:1 sobre papel)
 
-$overlay: rgba(#100c14, 0.55);
+$overlay: rgba(#0f1712, 0.58);
 
 // Estados
-$success: #3bb77e;
-$warning: #d9a441;
-$info: #6a8caf;
-$danger: #c2554f;
+$success: #2f7d57;
+$warning: #a9741b;
+$info: #4f7391;
+$danger: #b3433c;
 $success-bg: rgba($success, 0.12);
-$warning-bg: rgba($warning, 0.12);
+$warning-bg: rgba($warning, 0.14);
 $info-bg: rgba($info, 0.12);
-$danger-bg: rgba($danger, 0.12);
+$danger-bg: rgba($danger, 0.1);
 
 // Compatibilidad con el scaffold base
 $primary: $accent;
@@ -38,7 +48,11 @@ $white: $surface;
 $text-light: $surface;
 $text-secondary: $ink-soft;
 
-// Sombras — suaves, nada de "card de dashboard"
-$shadow-sm: 0 1px 2px rgba($ink, 0.04), 0 4px 12px rgba($ink, 0.04);
-$shadow-md: 0 2px 6px rgba($ink, 0.05), 0 18px 40px rgba($ink, 0.08);
-$shadow-lg: 0 30px 70px rgba($ink, 0.14);
+// Sombras — suaves y teñidas de tinta, nada de "card de dashboard"
+$shadow-sm:
+  0 1px 2px rgba($ink, 0.05),
+  0 4px 14px rgba($ink, 0.05);
+$shadow-md:
+  0 2px 6px rgba($ink, 0.06),
+  0 18px 40px rgba($ink, 0.09);
+$shadow-lg: 0 30px 70px rgba($ink, 0.16);
