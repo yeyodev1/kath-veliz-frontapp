@@ -46,7 +46,9 @@ onMounted(list.load)
           </template>
 
           <AdminDatum v-if="student.phone" label="Teléfono">{{ student.phone }}</AdminDatum>
-          <AdminDatum v-if="student.createdAt" label="Se registró">{{ formatDateEc(student.createdAt) }}</AdminDatum>
+          <AdminDatum v-if="student.createdAt" label="Se registró">{{
+            formatDateEc(student.createdAt)
+          }}</AdminDatum>
           <AdminDatum label="Accesos" wide>
             <span v-if="!student.accesses?.length">Sin accesos</span>
             <span v-else class="students__accesses">
