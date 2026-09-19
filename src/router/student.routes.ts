@@ -3,10 +3,12 @@ import type { RouteRecordRaw } from 'vue-router'
 // Fragmento de rutas del área "student". index.ts lo compone con los demás.
 export const studentRoutes: Array<RouteRecordRaw> = [
   {
+    // Sin requiresAuth a propósito: mandar a /login a quien toca "Comprar" era el mayor
+    // punto de abandono. La cuenta se crea (o se inicia sesión) dentro del mismo checkout.
     path: '/checkout/:slug',
     name: 'Checkout',
     component: () => import('@/views/CheckoutView.vue'),
-    meta: { title: 'Completa tu compra', requiresAuth: true },
+    meta: { title: 'Completa tu compra' },
   },
   {
     // Sin requiresAuth a propósito: Payphone reversa el cobro a los 5 minutos,
