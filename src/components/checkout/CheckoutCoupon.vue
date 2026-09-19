@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { nextTick, ref } from 'vue'
 import { studentCopy } from '@/config/student'
 import type { CouponResult } from '@/types/student'
 
@@ -14,6 +15,15 @@ defineEmits<{ apply: []; remove: [] }>()
 
 const code = defineModel<string>({ required: true })
 const copy = studentCopy.checkout.coupon
+
+// Colapsado por defecto: la mayoría no tiene cupón y un campo vacío a la vista
+// invita a salir a buscar uno. Quien sí lo tiene lo encuentra en un toque.
+const open = ref(false)
+
+function toggle() {
+  open.value = !open.value
+  if (open.value) nextTick(() => document.getElementById('coupon-code')?.focus())
+}
 </script>
 
 <template>
@@ -26,8 +36,30 @@ const copy = studentCopy.checkout.coupon
       </button>
     </p>
 
-    <form v-else-if="!locked" class="coupon__form" @submit.prevent="$emit('apply')">
-      <label for="coupon-code">{{ copy.label }}</label>
+    <button
+      v-else-if="!locked"
+      type="button"
+      class="coupon__toggle"
+      :aria-expanded="open"
+      aria-controls="coupon-form"
+      @click="toggle"
+    >
+      <i class="fa-solid fa-tag" aria-hidden="true"></i>
+      <span>{{ copy.label }}</span>
+      <i
+        class="fa-solid"
+        :class="open ? 'fa-chevron-up' : 'fa-chevron-down'"
+        aria-hidden="true"
+      ></i>
+    </button>
+
+    <form
+      v-if="!applied && !locked && open"
+      id="coupon-form"
+      class="coupon__form"
+      @submit.prevent="$emit('apply')"
+    >
+      <label class="visually-hidden" for="coupon-code">{{ copy.codeLabel }}</label>
       <div class="coupon__row">
         <input
           id="coupon-code"
@@ -56,6 +88,25 @@ const copy = studentCopy.checkout.coupon
 
 <style scoped lang="scss">
 .coupon {
+  &__toggle {
+    @include flex(row, center, flex-start, 0.5rem);
+    width: 100%;
+    min-height: 2.75rem;
+    font-size: $text-sm;
+    font-weight: 600;
+    text-align: left;
+    color: $accent-deep;
+
+    span {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    i:last-child {
+      font-size: 0.7em;
+    }
+  }
+
   &__row {
     @include flex(row, stretch, flex-start, 0.5rem);
 
