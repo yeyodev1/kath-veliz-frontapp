@@ -30,7 +30,13 @@ const emit = defineEmits<{ titleInput: []; slugInput: [] }>()
 
     <div class="adm-field">
       <label for="product-title">Título</label>
-      <input id="product-title" v-model="form.title" type="text" required @input="emit('titleInput')" />
+      <input
+        id="product-title"
+        v-model="form.title"
+        type="text"
+        required
+        @input="emit('titleInput')"
+      />
     </div>
 
     <div class="adm-field">
@@ -46,7 +52,9 @@ const emit = defineEmits<{ titleInput: []; slugInput: [] }>()
       />
       <p class="adm-field__hint">
         La página quedará en /p/{{ form.slug || 'tu-producto' }}.
-        <template v-if="!isNew">Si lo cambias, los enlaces que ya compartiste dejan de funcionar.</template>
+        <template v-if="!isNew"
+          >Si lo cambias, los enlaces que ya compartiste dejan de funcionar.</template
+        >
       </p>
     </div>
 
@@ -61,7 +69,11 @@ const emit = defineEmits<{ titleInput: []; slugInput: [] }>()
       <p class="adm-field__hint">Los saltos de línea se respetan en la página.</p>
     </div>
 
-    <AdminImageUpload v-model="form.cover" label="Portada" hint="Horizontal, JPG o PNG, hasta 10 MB." />
+    <AdminImageUpload
+      v-model="form.cover"
+      label="Portada"
+      hint="Horizontal, JPG o PNG, hasta 10 MB."
+    />
   </section>
 </template>
 
