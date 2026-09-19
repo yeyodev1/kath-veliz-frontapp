@@ -117,6 +117,16 @@ export const site = {
       secondary: { label: 'Quiero una asesoría', to: '/p/asesoria-personalizada' },
       photoAlt: 'Kath Veliz sonriendo',
       stamp: 'Tu coach de finanzas',
+      // Los temas de los módulos de "Tu Punto de Partida": corren en la cinta bajo el hero.
+      topics: [
+        'Mentalidad financiera',
+        'Ingresos',
+        'Ahorro',
+        'Gastos',
+        'Deudas',
+        'Tarjetas de crédito',
+        'Presupuesto',
+      ],
     },
     about: {
       eyebrow: 'Sobre mí',
@@ -333,6 +343,8 @@ export const site = {
     profileText: 'La cédula y el teléfono los pide Payphone al momento de pagar.',
     save: 'Guardar cambios',
     saved: 'Datos actualizados',
+    documentIdInvalid: 'La cédula tiene 10 dígitos (o 13 si es RUC).',
+    documentIdHint: 'Solo números, sin guiones.',
     passwordTitle: 'Cambiar contraseña',
     currentPassword: 'Contraseña actual',
     newPassword: 'Contraseña nueva',
