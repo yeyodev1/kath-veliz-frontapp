@@ -235,8 +235,15 @@ export const site = {
     },
     buy: {
       cta: 'Comprar',
+      ctaNow: 'Comprar ahora',
       note: 'Pago seguro con tarjeta a través de Payphone.',
+      steps: 'Sin registro previo: pones tus datos y pagas en la misma página.',
       owned: 'Ir a mis cursos',
+      ownedTitle: 'Ya es tuyo',
+      ownedText: 'Tu acceso está activo. Entra cuando quieras.',
+      ownedCourse: 'Ir a mi curso',
+      ownedDownload: 'Ir a mi plantilla',
+      barLabel: 'Comprar este programa',
     },
     closed: {
       title: 'Inscripciones cerradas',
