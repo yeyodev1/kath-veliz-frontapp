@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { adminUploadsService } from '@/services/adminUploads.service'
+import { adminUploadsService, UPLOAD_LIMITS_MB } from '@/services/adminUploads.service'
 import { useFileUpload } from '@/composables/admin/useFileUpload'
 import type { LessonAttachment } from '@/types/admin'
 
@@ -11,7 +11,7 @@ const { uploading, progress, upload } = useFileUpload((file, onProgress) =>
 )
 
 async function onPick(event: Event) {
-  const result = await upload(event, 100)
+  const result = await upload(event, UPLOAD_LIMITS_MB.file)
   if (!result) return
   attachments.value.push({
     name: result.filename || 'Archivo',
@@ -51,7 +51,8 @@ async function onPick(event: Event) {
       <input type="file" class="visually-hidden" :disabled="uploading" @change="onPick" />
     </label>
     <p class="adm-field__hint">
-      El nombre es lo que ve el alumno. Guarda la lección para conservar los cambios.
+      Hasta 10 MB por archivo. El nombre es lo que ve el alumno. Guarda la lección para conservar
+      los cambios.
     </p>
   </div>
 </template>
