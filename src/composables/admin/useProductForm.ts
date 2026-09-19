@@ -99,7 +99,10 @@ export function useProductForm() {
       downloadFile: product.downloadFile || null,
       freeResourceUrl: product.freeResourceUrl || '',
       infoPdf: product.infoPdf || null,
-      surveyQuestions: (product.surveyQuestions || []).map((q) => ({ ...q, options: [...(q.options || [])] })),
+      surveyQuestions: (product.surveyQuestions || []).map((q) => ({
+        ...q,
+        options: [...(q.options || [])],
+      })),
     })
     slugTouched.value = true
   }
@@ -127,13 +130,17 @@ export function useProductForm() {
   function validate(): string {
     if (!form.title.trim()) return 'Escribe el título del producto.'
     if (!form.slug.trim()) return 'Falta el enlace (slug) del producto.'
-    if (form.type !== 'free' && inputToCents(form.price) === null) return 'Escribe un precio válido en dólares.'
-    if (!form.lifetime && !(Number(form.accessDays) >= 1)) return 'Escribe cuántos días dura el acceso.'
-    if (form.type === 'free' && !form.freeResourceUrl.trim()) return 'Pega el enlace del recurso gratuito.'
+    if (form.type !== 'free' && inputToCents(form.price) === null)
+      return 'Escribe un precio válido en dólares.'
+    if (!form.lifetime && !(Number(form.accessDays) >= 1))
+      return 'Escribe cuántos días dura el acceso.'
+    if (form.type === 'free' && !form.freeResourceUrl.trim())
+      return 'Pega el enlace del recurso gratuito.'
     const badSelect = form.surveyQuestions.some(
       (q) => q.type === 'select' && q.options.filter((option) => option.trim()).length < 2,
     )
-    if (form.type === 'service' && badSelect) return 'Las preguntas de lista necesitan al menos dos opciones.'
+    if (form.type === 'service' && badSelect)
+      return 'Las preguntas de lista necesitan al menos dos opciones.'
     return ''
   }
 
@@ -207,5 +214,17 @@ export function useProductForm() {
     Object.assign(form, emptyForm())
   }
 
-  return { form, productId, isNew, loading, error, saving, slugTouched, load, save, reset, onTitleInput }
+  return {
+    form,
+    productId,
+    isNew,
+    loading,
+    error,
+    saving,
+    slugTouched,
+    load,
+    save,
+    reset,
+    onTitleInput,
+  }
 }
