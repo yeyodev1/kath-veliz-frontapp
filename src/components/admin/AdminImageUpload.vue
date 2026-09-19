@@ -27,19 +27,40 @@ async function onPick(event: Event) {
       </div>
 
       <div class="image-upload__side">
-        <label class="btn btn--ghost adm-btn-sm image-upload__pick" :class="{ 'image-upload__pick--busy': uploading }">
+        <label
+          class="btn btn--ghost adm-btn-sm image-upload__pick"
+          :class="{ 'image-upload__pick--busy': uploading }"
+        >
           <i class="fa-solid fa-arrow-up-from-bracket"></i>
           {{ image ? 'Cambiar imagen' : 'Subir imagen' }}
-          <input type="file" accept="image/*" class="visually-hidden" :disabled="uploading" @change="onPick" />
+          <input
+            type="file"
+            accept="image/*"
+            class="visually-hidden"
+            :disabled="uploading"
+            @change="onPick"
+          />
         </label>
-        <button v-if="image && !uploading" type="button" class="image-upload__remove" @click="image = null">
+        <button
+          v-if="image && !uploading"
+          type="button"
+          class="image-upload__remove"
+          @click="image = null"
+        >
           Quitar
         </button>
         <p v-if="hint" class="adm-field__hint">{{ hint }}</p>
       </div>
     </div>
 
-    <div v-if="uploading" class="adm-progress" role="progressbar" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
+    <div
+      v-if="uploading"
+      class="adm-progress"
+      role="progressbar"
+      :aria-valuenow="progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
       <div class="adm-progress__bar" :style="{ width: `${progress}%` }"></div>
     </div>
   </div>
