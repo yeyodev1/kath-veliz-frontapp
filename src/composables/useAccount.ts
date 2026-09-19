@@ -23,7 +23,8 @@ export function useAccount() {
     profileErrors.name = profile.name.trim() ? '' : site.forms.required
     // La cédula es opcional acá (se exige en el checkout), pero si viene, que sean 10 o 13 dígitos.
     const doc = profile.documentId.trim()
-    profileErrors.documentId = !doc || /^\d{10}(\d{3})?$/.test(doc) ? '' : site.account.documentIdInvalid
+    profileErrors.documentId =
+      !doc || /^\d{10}(\d{3})?$/.test(doc) ? '' : site.account.documentIdInvalid
     if (profileErrors.name || profileErrors.documentId) return
 
     savingProfile.value = true
