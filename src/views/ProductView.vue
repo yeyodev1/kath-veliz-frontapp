@@ -34,11 +34,18 @@ const hasLessons = computed(() => product.value?.modules.some((m) => m.lessons.l
     </div>
 
     <div v-else-if="!product" class="product__state">
-      <h1 class="product__state-title">{{ notFound ? labels.notFound.title : site.catalog.error }}</h1>
+      <h1 class="product__state-title">
+        {{ notFound ? labels.notFound.title : site.catalog.error }}
+      </h1>
       <p v-if="notFound">{{ labels.notFound.text }}</p>
       <p v-else-if="error">{{ error }}</p>
       <div class="product__state-actions">
-        <BaseButton v-if="!notFound" variant="ghost" icon="fa-solid fa-rotate-right" @click="reload">
+        <BaseButton
+          v-if="!notFound"
+          variant="ghost"
+          icon="fa-solid fa-rotate-right"
+          @click="reload"
+        >
           {{ site.catalog.retry }}
         </BaseButton>
         <BaseButton to="/cursos">{{ labels.notFound.cta }}</BaseButton>
@@ -48,15 +55,30 @@ const hasLessons = computed(() => product.value?.modules.some((m) => m.lessons.l
     <template v-else>
       <ProductHero :product="product" />
 
-      <div class="product__layout">
-        <div class="product__aside" :class="{ 'product__aside--sticky': product.type !== 'service' }">
+      <div
+        class="product__layout"
+        :class="{ 'product__layout--service': product.type === 'service' }"
+      >
+        <div
+          class="product__aside"
+          :class="{ 'product__aside--sticky': product.type !== 'service' }"
+        >
           <ProductAction :key="product.slug" :product="product" />
         </div>
 
         <div class="product__content">
-          <p v-if="product.description" v-reveal class="product__description">{{ product.description }}</p>
+          <p v-if="product.description" v-reveal class="product__description">
+            {{ product.description }}
+          </p>
 
           <ServiceSteps v-if="product.type === 'service'" />
+          <a
+            v-if="product.type === 'service' && product.saleMode !== 'closed'"
+            href="#accion"
+            class="btn btn--primary product__jump"
+          >
+            {{ labels.service.anchor }} <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+          </a>
 
           <ProductChecklist
             v-if="product.highlights.length"
@@ -69,7 +91,11 @@ const hasLessons = computed(() => product.value?.modules.some((m) => m.lessons.l
             :items="product.audience"
             variant="star"
           />
-          <ProductSyllabus v-if="hasLessons" :modules="product.modules" @preview="previewLesson = $event" />
+          <ProductSyllabus
+            v-if="hasLessons"
+            :modules="product.modules"
+            @preview="previewLesson = $event"
+          />
           <ProductExtras :sessions="product.nextLiveSessions" :faqs="product.faqs" />
         </div>
       </div>
@@ -120,6 +146,22 @@ const hasLessons = computed(() => product.value?.modules.some((m) => m.lessons.l
       align-items: flex-start;
       gap: clamp(2.5rem, 5vw, 5rem);
       padding-top: 3.5rem;
+    }
+  }
+
+  // La asesoría es la excepción: primero se explica y la encuesta (larga) va al final.
+  &__layout--service {
+    @include until('lg') {
+      flex-direction: column-reverse;
+    }
+  }
+
+  &__jump {
+    align-self: flex-start;
+    margin-top: -1.5rem;
+
+    @include from('lg') {
+      display: none;
     }
   }
 
