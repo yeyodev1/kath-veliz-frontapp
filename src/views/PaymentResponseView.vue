@@ -2,6 +2,7 @@
 import { computed, onMounted } from 'vue'
 import StateBlock from '@/components/student/StateBlock.vue'
 import { usePaymentConfirmation } from '@/composables/usePaymentConfirmation'
+import { useProductDownload } from '@/composables/useProductDownload'
 import { studentCopy } from '@/config/student'
 import { formatCents } from '@/utils/money'
 
@@ -9,7 +10,18 @@ const copy = studentCopy.response
 const { state, result, errorMessage, loginTarget, confirm } = usePaymentConfirmation()
 
 const product = computed(() => result.value?.product ?? null)
-const retryTo = computed(() => (product.value ? `/checkout/${product.value.slug}` : '/cursos'))
+const { downloadingSlug, download } = useProductDownload()
+
+// De vuelta al checkout: la sesión sigue abierta, así que los datos ya están cargados.
+// Una asesoría necesita además el mismo ?solicitud= del enlace de pago.
+const retryTo = computed(() => {
+  if (!product.value) return '/cursos'
+  const request = result.value?.order?.serviceRequest
+  return {
+    path: `/checkout/${product.value.slug}`,
+    query: request ? { solicitud: request } : {},
+  }
+})
 const paidText = computed(() =>
   product.value?.type === 'service'
     ? copy.paidServiceText
@@ -37,22 +49,48 @@ onMounted(confirm)
       :title="copy.paidTitle"
       :text="paidText"
     >
+      <p class="response__mail">
+        <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+        {{ product?.type === 'service' ? copy.emailSentService : copy.emailSent }}
+      </p>
       <p v-if="result?.order?.totalCents" class="response__total">
         {{ copy.orderTotal }}: <strong>{{ formatCents(result.order.totalCents) }}</strong>
       </p>
       <template #actions>
         <RouterLink
           v-if="product?.type === 'course'"
-          class="btn btn--primary"
+          class="btn btn--primary response__cta"
           :to="`/aprender/${product.slug}`"
         >
           <i class="fa-solid fa-play" aria-hidden="true"></i> {{ copy.paidCourseCta }}
         </RouterLink>
-        <RouterLink v-else-if="product?.type === 'service'" class="btn btn--primary" to="/">
+        <RouterLink
+          v-else-if="product?.type === 'service'"
+          class="btn btn--primary response__cta"
+          to="/"
+        >
           {{ copy.paidServiceCta }}
         </RouterLink>
-        <RouterLink v-else class="btn btn--primary" to="/mis-cursos">
-          <i class="fa-solid fa-download" aria-hidden="true"></i> {{ copy.paidDownloadCta }}
+        <template v-else-if="product">
+          <button
+            class="btn btn--primary response__cta"
+            type="button"
+            :disabled="!!downloadingSlug"
+            @click="download(product.slug)"
+          >
+            <i
+              class="fa-solid"
+              :class="downloadingSlug ? 'fa-spinner fa-spin' : 'fa-download'"
+              aria-hidden="true"
+            ></i>
+            {{ downloadingSlug ? copy.paidDownloading : copy.paidDownloadCta }}
+          </button>
+          <RouterLink class="btn btn--ghost response__cta" :to="`/aprender/${product.slug}`">
+            <i class="fa-solid fa-play" aria-hidden="true"></i> {{ copy.paidTutorialCta }}
+          </RouterLink>
+        </template>
+        <RouterLink v-else class="btn btn--primary response__cta" to="/mis-cursos">
+          {{ copy.myCourses }}
         </RouterLink>
       </template>
     </StateBlock>
@@ -65,7 +103,9 @@ onMounted(confirm)
       :text="copy.canceledText"
     >
       <template #actions>
-        <RouterLink class="btn btn--primary" :to="retryTo">{{ copy.retry }}</RouterLink>
+        <RouterLink class="btn btn--primary response__cta" :to="retryTo">
+          <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> {{ copy.retry }}
+        </RouterLink>
       </template>
     </StateBlock>
 
@@ -105,7 +145,9 @@ onMounted(confirm)
         <button v-if="!product" class="btn btn--primary" type="button" @click="confirm">
           <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> {{ copy.retry }}
         </button>
-        <RouterLink v-else class="btn btn--primary" :to="retryTo">{{ copy.retry }}</RouterLink>
+        <RouterLink v-else class="btn btn--primary response__cta" :to="retryTo">
+          <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> {{ copy.retry }}
+        </RouterLink>
         <RouterLink class="btn btn--ghost" to="/mis-cursos">{{ copy.myCourses }}</RouterLink>
       </template>
     </StateBlock>
@@ -118,6 +160,28 @@ onMounted(confirm)
   @include flex(column, center, center);
   flex: 1;
   padding-block: $space-xl;
+
+  &__mail {
+    font-size: $text-sm;
+    font-weight: 600;
+    color: $ink;
+
+    i {
+      margin-right: 0.3rem;
+      color: $success;
+    }
+  }
+
+  // El siguiente paso es uno solo y se ve: ancho completo en móvil, 52 px de alto.
+  &__cta {
+    width: 100%;
+    min-height: 3.25rem;
+
+    @include from('sm') {
+      width: auto;
+      min-width: 16rem;
+    }
+  }
 
   &__total,
   &__note {
