@@ -77,7 +77,9 @@ onMounted(() => load())
           rows="2"
           placeholder="Ej.: alumna de la cohorte 2025, cortesía, canje…"
         ></textarea>
-        <p class="adm-field__hint">Solo la ves tú. Sirve para acordarte por qué diste este acceso.</p>
+        <p class="adm-field__hint">
+          Solo la ves tú. Sirve para acordarte por qué diste este acceso.
+        </p>
       </div>
     </form>
 
