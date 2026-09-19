@@ -75,7 +75,12 @@ function accessLabel(days: number): string {
       </div>
 
       <div v-if="product.cover?.url && !coverFailed" class="phero__cover">
-        <img :src="product.cover.url" :alt="product.title" decoding="async" @error="coverFailed = true" />
+        <img
+          :src="product.cover.url"
+          :alt="product.title"
+          decoding="async"
+          @error="coverFailed = true"
+        />
       </div>
     </div>
   </header>
