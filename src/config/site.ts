@@ -85,10 +85,11 @@ export const site = {
     mark: '/img/kv-mark.png',
     alt: 'Kath Veliz, tu coach de finanzas',
   },
-  // Fotos profesionales pendientes: mientras no existan, BrandPhoto pinta un
-  // bloque de color de marca con el monograma.
+  // Fotos de la sesión profesional. Si alguna no carga, BrandPhoto pinta un
+  // bloque de color de marca con el monograma en vez de una imagen rota.
   images: {
     hero: '/img/kath-hero.jpg',
+    heroMobile: '/img/kath-hero-movil.jpg',
     about: '/img/kath-sobre-mi.jpg',
   },
   nav: [
@@ -111,7 +112,11 @@ export const site = {
   home: {
     hero: {
       eyebrow: 'Kath Veliz — Asesoría & Cursos',
-      title: { before: 'Tu ', em: 'libertad', after: ' empieza cuando tomas el control de tus finanzas' },
+      title: {
+        before: 'Tu ',
+        em: 'libertad',
+        after: ' empieza cuando tomas el control de tus finanzas',
+      },
       text: 'Aquí no hay juicios ni fórmulas complicadas, solo herramientas prácticas y acompañamiento real para que entiendas a dónde se va tu dinero.',
       primary: { label: 'Ver los cursos', to: '/cursos' },
       secondary: { label: 'Quiero una asesoría', to: '/p/asesoria-personalizada' },
@@ -178,13 +183,15 @@ export const site = {
       eyebrow: 'Cursos y plantillas',
       title: { before: 'Aprende a organizar tu dinero ', em: 'desde cero', after: '' },
       text: 'Sin importar tu nivel de conocimiento: de manera sencilla, práctica y con términos fáciles de entender.',
-      empty: 'Pronto vas a encontrar aquí los cursos. Mientras tanto, únete al canal para enterarte primero.',
+      empty:
+        'Pronto vas a encontrar aquí los cursos. Mientras tanto, únete al canal para enterarte primero.',
     },
     recursos: {
       eyebrow: 'Recursos gratuitos',
       title: { before: 'Guías para dar el ', em: 'primer paso', after: '' },
       text: 'Déjame tu nombre y tu correo y te llega el enlace al instante.',
-      empty: 'Estoy preparando los primeros recursos gratuitos. Únete al canal y te aviso cuando salgan.',
+      empty:
+        'Estoy preparando los primeros recursos gratuitos. Únete al canal y te aviso cuando salgan.',
     },
     error: 'No pudimos cargar el catálogo. Revisa tu conexión e inténtalo de nuevo.',
     retry: 'Reintentar',
@@ -246,6 +253,7 @@ export const site = {
       title: 'Cuéntame de ti',
       text: 'No atiendo a todo el mundo: quiero estar segura de que puedo ayudarte. Llena esta encuesta y te respondo por correo.',
       cta: 'Enviar mi solicitud',
+      anchor: 'Llenar la encuesta',
       success: '¡Recibido! Te acabo de enviar un correo con toda la información de la asesoría.',
       stepsTitle: 'Cómo funciona',
       steps: [
@@ -331,7 +339,8 @@ export const site = {
       success: 'Contraseña guardada. ¡Bienvenida!',
     },
     aside: {
-      quote: 'Tomar el control de tus finanzas no debería ser un secreto que descubres demasiado tarde.',
+      quote:
+        'Tomar el control de tus finanzas no debería ser un secreto que descubres demasiado tarde.',
       author: 'Kath Veliz',
     },
     welcome: 'Hola',
