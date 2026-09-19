@@ -19,14 +19,24 @@ const confirm = useConfirm()
 
 function askRemoveModule(module: AdminModule) {
   confirm.ask(
-    { title: copy.deleteModuleTitle, message: `${module.title}. ${copy.deleteModuleMessage}`, confirmLabel: 'Sí, borrar', danger: true },
+    {
+      title: copy.deleteModuleTitle,
+      message: `${module.title}. ${copy.deleteModuleMessage}`,
+      confirmLabel: 'Sí, borrar',
+      danger: true,
+    },
     () => content.removeModule(module),
   )
 }
 
 function askRemoveLesson(lesson: AdminLesson) {
   confirm.ask(
-    { title: copy.deleteLessonTitle, message: `${lesson.title}. ${copy.deleteLessonMessage}`, confirmLabel: 'Sí, borrar', danger: true },
+    {
+      title: copy.deleteLessonTitle,
+      message: `${lesson.title}. ${copy.deleteLessonMessage}`,
+      confirmLabel: 'Sí, borrar',
+      danger: true,
+    },
     () => content.removeLesson(lesson),
   )
 }
@@ -93,8 +103,15 @@ onMounted(() => content.load())
         </div>
       </form>
       <template #footer>
-        <button type="button" class="btn btn--ghost" @click="moduleForm.open = false">Cancelar</button>
-        <button type="submit" form="module-form" class="btn btn--primary" :disabled="saving || !moduleForm.title.trim()">
+        <button type="button" class="btn btn--ghost" @click="moduleForm.open = false">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          form="module-form"
+          class="btn btn--primary"
+          :disabled="saving || !moduleForm.title.trim()"
+        >
           {{ saving ? 'Guardando…' : 'Guardar módulo' }}
         </button>
       </template>
