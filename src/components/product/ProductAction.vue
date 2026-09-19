@@ -32,7 +32,12 @@ const text = computed(() => (mode.value === 'buy' ? '' : copy[mode.value].text))
 </script>
 
 <template>
-  <aside id="accion" class="action" :class="`action--${mode}`" :aria-label="heading || copy.buy.cta">
+  <aside
+    id="accion"
+    class="action"
+    :class="`action--${mode}`"
+    :aria-label="heading || copy.buy.cta"
+  >
     <p v-if="showPrice" class="action__price">
       <s v-if="product.compareAtPriceCents" class="action__compare">
         <span class="visually-hidden">Antes </span>{{ formatPrice(product.compareAtPriceCents) }}
@@ -48,7 +53,9 @@ const text = computed(() => (mode.value === 'buy' ? '' : copy[mode.value].text))
       <BaseButton :to="`/checkout/${product.slug}`" block icon-right="fa-solid fa-arrow-right">
         {{ copy.buy.cta }}
       </BaseButton>
-      <p class="action__note"><i class="fa-solid fa-lock" aria-hidden="true"></i> {{ copy.buy.note }}</p>
+      <p class="action__note">
+        <i class="fa-solid fa-lock" aria-hidden="true"></i> {{ copy.buy.note }}
+      </p>
     </template>
 
     <LeadForm
@@ -73,7 +80,13 @@ const text = computed(() => (mode.value === 'buy' ? '' : copy[mode.value].text))
 
     <ServiceSurveyForm v-else-if="mode === 'service'" :product="product" />
 
-    <BaseButton v-else :href="site.social.community" variant="ghost" block icon="fa-brands fa-whatsapp">
+    <BaseButton
+      v-else
+      :href="site.social.community"
+      variant="ghost"
+      block
+      icon="fa-brands fa-whatsapp"
+    >
       {{ site.home.community.cta }}
     </BaseButton>
   </aside>
