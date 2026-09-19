@@ -27,7 +27,12 @@ const about = site.home.about
         </div>
 
         <ul class="about__facts">
-          <li v-for="(fact, i) in about.facts" :key="fact.label" v-reveal="i + 1" class="about__fact">
+          <li
+            v-for="(fact, i) in about.facts"
+            :key="fact.label"
+            v-reveal="i + 1"
+            class="about__fact"
+          >
             <strong>{{ fact.value }}</strong>
             <span>{{ fact.label }}</span>
           </li>
