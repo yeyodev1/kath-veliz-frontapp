@@ -7,7 +7,9 @@ import type { ApiError } from '@/types'
  * Estado de una subida a Cloudinary (vía backend): progreso y errores en un
  * solo lugar para la portada, los descargables y los adjuntos.
  */
-export function useFileUpload<T>(uploader: (file: File, onProgress: (percent: number) => void) => Promise<T>) {
+export function useFileUpload<T>(
+  uploader: (file: File, onProgress: (percent: number) => void) => Promise<T>,
+) {
   const toast = useToastStore()
   const uploading = ref(false)
   const progress = ref(0)
