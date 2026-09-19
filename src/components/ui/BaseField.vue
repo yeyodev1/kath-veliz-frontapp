@@ -114,8 +114,8 @@ const describedBy = computed(() =>
     right: 0.2rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 2.6rem;
-    height: 2.6rem;
+    width: 2.75rem;
+    height: 2.75rem;
     color: $ink-muted;
     border-radius: $radius-sm;
     @include flex(row, center, center);
