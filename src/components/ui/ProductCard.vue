@@ -9,7 +9,11 @@ const props = defineProps<{ product: ProductCard; index?: number }>()
 const coverFailed = ref(false)
 const labels = site.product
 
-const isFree = computed(() => props.product.type === 'free' || props.product.priceCents === 0)
+// En lista de espera o cerrado el precio puede no estar definido aún: $0 ahí no es "gratis".
+const notOnSale = computed(() => props.product.saleMode !== 'open' && !props.product.priceCents)
+const isFree = computed(
+  () => props.product.type === 'free' || (props.product.priceCents === 0 && !notOnSale.value),
+)
 const badge = computed(() => {
   if (props.product.saleMode === 'waitlist') return labels.badges.waitlist
   if (props.product.saleMode === 'closed') return labels.badges.closed
@@ -44,6 +48,9 @@ const number = computed(() => String((props.index ?? 0) + 1).padStart(2, '0'))
         <div class="card__foot">
           <p class="card__price">
             <template v-if="isFree">{{ labels.badges.free }}</template>
+            <template v-else-if="notOnSale">
+              {{ product.saleMode === 'waitlist' ? labels.badges.waitlistPerk : '' }}
+            </template>
             <template v-else-if="product.type !== 'service' || product.priceCents">
               <s v-if="product.compareAtPriceCents" class="card__compare">
                 <span class="visually-hidden">Antes </span
