@@ -54,3 +54,11 @@ En los componentes se usan `$variables` y `@include mixin` directamente, sin `@u
 ```bash
 vercel --prod
 ```
+
+## Despliegue
+
+- Producción: https://kath-veliz-frontapp.vercel.app
+- Vercel está enlazado a este repo: **cada push a `main` despliega solo**. No hace falta `vercel deploy`.
+- Única variable: `VITE_API_BASE_URL` (URL del backapp). Se hornea en el build, así que cambiarla exige redeploy.
+- `vercel.json` reescribe todas las rutas a `index.html` (SPA) y envía `Referrer-Policy: origin-when-cross-origin`,
+  que exige la Cajita de Pagos de Payphone.
