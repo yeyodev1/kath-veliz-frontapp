@@ -14,18 +14,27 @@ const copy = site.home.freebies
 <template>
   <section id="recursos" class="freebies">
     <div class="freebies__inner">
-      <SectionHeading v-reveal :eyebrow="copy.eyebrow" :title="copy.title" :text="copy.text" on-dark />
+      <SectionHeading
+        v-reveal
+        :eyebrow="copy.eyebrow"
+        :title="copy.title"
+        :text="copy.text"
+        on-dark
+      />
 
       <ul class="freebies__list">
         <li v-for="(product, i) in products" :key="product.slug" v-reveal="i + 1">
           <RouterLink :to="`/p/${product.slug}`" class="freebie">
-            <span class="freebie__icon" aria-hidden="true"><i class="fa-regular fa-file-lines"></i></span>
+            <span class="freebie__icon" aria-hidden="true"
+              ><i class="fa-regular fa-file-lines"></i
+            ></span>
             <span class="freebie__body">
               <strong class="freebie__title">{{ product.title }}</strong>
               <span v-if="product.subtitle" class="freebie__text">{{ product.subtitle }}</span>
             </span>
             <span class="freebie__cta">
-              {{ site.product.cardCta.free }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              {{ site.product.cardCta.free }}
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
             </span>
           </RouterLink>
         </li>
@@ -40,7 +49,11 @@ const copy = site.home.freebies
 .freebies {
   background: $accent;
   color: $paper;
-  background-image: repeating-linear-gradient(135deg, rgba($paper, 0.04) 0 1px, transparent 1px 16px);
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba($paper, 0.04) 0 1px,
+    transparent 1px 16px
+  );
 
   &__inner {
     @include container;
