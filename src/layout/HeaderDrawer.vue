@@ -68,7 +68,12 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
 
           <div class="drawer__user">
             <template v-if="userStore.isAuthenticated">
-              <RouterLink v-for="link in userLinks" :key="link.to" :to="link.to" class="drawer__user-link">
+              <RouterLink
+                v-for="link in userLinks"
+                :key="link.to"
+                :to="link.to"
+                class="drawer__user-link"
+              >
                 <i :class="link.icon" aria-hidden="true"></i> {{ link.label }}
               </RouterLink>
               <button type="button" class="drawer__user-link" @click="signOut">
@@ -88,7 +93,12 @@ onUnmounted(() => window.removeEventListener('keydown', onKey))
             <a :href="site.social.tiktok" target="_blank" rel="noopener" aria-label="TikTok">
               <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
             </a>
-            <a :href="site.social.community" target="_blank" rel="noopener" :aria-label="site.footer.community">
+            <a
+              :href="site.social.community"
+              target="_blank"
+              rel="noopener"
+              :aria-label="site.footer.community"
+            >
               <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
             </a>
           </div>
