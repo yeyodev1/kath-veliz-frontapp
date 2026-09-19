@@ -36,7 +36,13 @@ const { form, errors, sending, done, failure, submit } = useLeadForm({
     <Transition name="rise" mode="out-in">
       <FormMessage v-if="done" type="success">{{ success }}</FormMessage>
 
-      <form v-else class="lead__form" :class="{ 'lead__form--inline': inline }" novalidate @submit.prevent="submit">
+      <form
+        v-else
+        class="lead__form"
+        :class="{ 'lead__form--inline': inline }"
+        novalidate
+        @submit.prevent="submit"
+      >
         <BaseField
           v-if="askName"
           :id="`${idPrefix}-name`"
