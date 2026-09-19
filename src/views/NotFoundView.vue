@@ -1,32 +1,50 @@
+<script setup lang="ts">
+import { site } from '@/config/site'
+import BaseButton from '@/components/ui/BaseButton.vue'
+
+const copy = site.notFound
+</script>
+
 <template>
   <section class="not-found">
-    <p class="not-found__code">404</p>
-    <h1 class="not-found__title">Esta página no existe</h1>
-    <p class="not-found__text">Puede que el enlace esté mal escrito o que la página se haya movido.</p>
-    <RouterLink to="/" class="btn btn--primary">Volver al inicio</RouterLink>
+    <p class="not-found__code">{{ copy.code }}</p>
+    <h1 class="not-found__title">
+      {{ copy.title.before }}<em>{{ copy.title.em }}</em>{{ copy.title.after }}
+    </h1>
+    <p class="not-found__text">{{ copy.text }}</p>
+    <div class="not-found__actions">
+      <BaseButton to="/">{{ copy.cta }}</BaseButton>
+      <BaseButton to="/cursos" variant="ghost">{{ copy.secondary }}</BaseButton>
+    </div>
   </section>
 </template>
 
 <style scoped lang="scss">
 .not-found {
-  @include container(640px);
-  @include flex(column, center, center, 0.8rem);
+  @include container(680px);
+  @include flex(column, center, center, 1rem);
   flex: 1;
   text-align: center;
   padding-block: $space-section;
 
   &__code {
     @include eyebrow;
-    font-size: $text-base;
+    color: $clay-deep;
   }
 
   &__title {
-    @include display($display-md);
+    @include display($display-lg);
   }
 
   &__text {
     color: $ink-soft;
-    margin-bottom: 0.6rem;
+    max-width: 30rem;
+  }
+
+  &__actions {
+    @include flex(row, center, center, 0.75rem);
+    flex-wrap: wrap;
+    margin-top: 0.6rem;
   }
 }
 </style>
