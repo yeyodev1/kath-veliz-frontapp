@@ -34,11 +34,16 @@ class AdminProductsService extends AdminAPIBase {
   }
 
   async content(productId: string): Promise<AdminModule[]> {
-    const data = await this.fetch<{ modules?: AdminModule[] }>(`admin/products/${productId}/content`)
+    const data = await this.fetch<{ modules?: AdminModule[] }>(
+      `admin/products/${productId}/content`,
+    )
     return (data.modules || []).map((module) => ({ ...module, lessons: module.lessons || [] }))
   }
 
-  createModule(productId: string, payload: { title: string; description: string }): Promise<AdminModule> {
+  createModule(
+    productId: string,
+    payload: { title: string; description: string },
+  ): Promise<AdminModule> {
     return this.create<AdminModule>(`admin/products/${productId}/modules`, payload)
   }
 
