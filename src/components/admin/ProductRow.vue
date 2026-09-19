@@ -12,7 +12,9 @@ const emit = defineEmits<{ togglePublish: []; remove: [] }>()
 const hasContent = computed(() => ['course', 'download'].includes(props.product.type))
 
 const duration = computed(() =>
-  props.product.accessDurationDays ? `${props.product.accessDurationDays} días de acceso` : adminCopy.products.lifetime,
+  props.product.accessDurationDays
+    ? `${props.product.accessDurationDays} días de acceso`
+    : adminCopy.products.lifetime,
 )
 </script>
 
@@ -42,7 +44,10 @@ const duration = computed(() =>
     </div>
 
     <footer class="product-row__actions">
-      <RouterLink :to="{ name: 'AdminProductEdit', params: { id: product.id } }" class="btn btn--ghost adm-btn-sm">
+      <RouterLink
+        :to="{ name: 'AdminProductEdit', params: { id: product.id } }"
+        class="btn btn--ghost adm-btn-sm"
+      >
         <i class="fa-solid fa-pen"></i>
         Editar
       </RouterLink>
@@ -58,7 +63,11 @@ const duration = computed(() =>
         <i :class="product.isPublished ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
         {{ product.isPublished ? 'Despublicar' : 'Publicar' }}
       </button>
-      <button class="adm-icon-btn adm-icon-btn--danger" aria-label="Borrar producto" @click="emit('remove')">
+      <button
+        class="adm-icon-btn adm-icon-btn--danger"
+        aria-label="Borrar producto"
+        @click="emit('remove')"
+      >
         <i class="fa-solid fa-trash"></i>
       </button>
     </footer>
