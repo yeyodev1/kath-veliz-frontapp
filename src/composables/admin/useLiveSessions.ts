@@ -111,8 +111,13 @@ export function useLiveSessions() {
   }
 
   async function notify(session: LiveSession) {
-    const { sent } = await adminLiveService.notify(session.id)
-    if (sent > 0) toast.success(`Aviso enviado a ${sent} ${sent === 1 ? 'alumno' : 'alumnos'}.`)
+    const { sent, failed = 0 } = await adminLiveService.notify(session.id)
+    const people = (count: number) => `${count} ${count === 1 ? 'alumno' : 'alumnos'}`
+    if (failed > 0) {
+      toast.error(
+        `Aviso enviado a ${people(sent)}, pero no salió para ${people(failed)}. Vuelve a intentarlo en unos minutos.`,
+      )
+    } else if (sent > 0) toast.success(`Aviso enviado a ${people(sent)}.`)
     else toast.info('No se envió ningún correo: este curso no tiene alumnos con acceso vigente.')
   }
 
