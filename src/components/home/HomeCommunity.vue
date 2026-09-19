@@ -10,9 +10,16 @@ const copy = site.home.community
 <template>
   <section id="contacto" class="community">
     <div v-reveal class="community__inner">
-      <SectionHeading :eyebrow="copy.eyebrow" :title="copy.title" :text="copy.text" align="center" />
+      <SectionHeading
+        :eyebrow="copy.eyebrow"
+        :title="copy.title"
+        :text="copy.text"
+        align="center"
+      />
 
-      <BaseButton :href="site.social.community" icon="fa-brands fa-whatsapp">{{ copy.cta }}</BaseButton>
+      <BaseButton :href="site.social.community" icon="fa-brands fa-whatsapp">{{
+        copy.cta
+      }}</BaseButton>
 
       <div class="community__follow">
         <p>{{ copy.follow }}</p>
