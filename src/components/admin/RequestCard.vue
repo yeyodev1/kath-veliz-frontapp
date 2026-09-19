@@ -8,7 +8,10 @@ import { formatDateEc } from '@/utils/adminFormat'
 import type { ServiceRequest } from '@/types/admin'
 
 const props = defineProps<{ request: ServiceRequest }>()
-const emit = defineEmits<{ approve: [request: ServiceRequest]; reject: [request: ServiceRequest] }>()
+const emit = defineEmits<{
+  approve: [request: ServiceRequest]
+  reject: [request: ServiceRequest]
+}>()
 
 // Las pendientes llegan abiertas: son las que Kath tiene que leer para decidir.
 const showAnswers = ref(props.request.status === 'pending')
@@ -29,11 +32,17 @@ const showAnswers = ref(props.request.status === 'pending')
     <AdminDatum v-if="request.phone" label="Teléfono">
       <a :href="`tel:${request.phone}`">{{ request.phone }}</a>
     </AdminDatum>
-    <AdminDatum v-if="request.createdAt" label="Llegó el">{{ formatDateEc(request.createdAt) }}</AdminDatum>
+    <AdminDatum v-if="request.createdAt" label="Llegó el">{{
+      formatDateEc(request.createdAt)
+    }}</AdminDatum>
     <AdminDatum v-if="request.adminNote" label="Tu nota" wide>{{ request.adminNote }}</AdminDatum>
 
     <div class="request__answers">
-      <button class="request__toggle" :aria-expanded="showAnswers" @click="showAnswers = !showAnswers">
+      <button
+        class="request__toggle"
+        :aria-expanded="showAnswers"
+        @click="showAnswers = !showAnswers"
+      >
         <i :class="showAnswers ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down'"></i>
         {{ showAnswers ? 'Ocultar respuestas' : `Ver respuestas (${request.answers.length})` }}
       </button>
