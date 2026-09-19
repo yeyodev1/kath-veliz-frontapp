@@ -16,7 +16,9 @@ export function formatPrice(cents: number): string {
   const safe = Number.isFinite(cents) ? Math.round(cents) : 0
   const sign = safe < 0 ? '-' : ''
   const abs = Math.abs(safe)
-  const dollars = Math.floor(abs / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const dollars = Math.floor(abs / 100)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   const rest = (abs % 100).toString().padStart(2, '0')
   return `${sign}$${dollars}.${rest}`
 }
