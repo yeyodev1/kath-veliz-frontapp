@@ -20,7 +20,9 @@ const labels = site.product.sections
         <i class="fa-solid fa-video session__icon" aria-hidden="true"></i>
         <div>
           <strong class="session__title">{{ session.title }}</strong>
-          <time class="session__date" :datetime="session.startsAt">{{ formatDateTime(session.startsAt) }}</time>
+          <time class="session__date" :datetime="session.startsAt">{{
+            formatDateTime(session.startsAt)
+          }}</time>
         </div>
       </li>
     </ul>
