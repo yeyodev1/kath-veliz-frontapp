@@ -66,6 +66,9 @@ const learnLabel = computed(() => {
       <p v-else-if="item.product.type === 'service' && !locked" class="course__note">
         {{ copy.serviceNote }}
       </p>
+      <p v-else-if="item.product.type === 'course' && !locked" class="course__note">
+        {{ copy.comingSoon }}
+      </p>
 
       <div class="course__actions">
         <RouterLink v-if="locked" class="btn btn--dark" :to="rebuyTo">
@@ -93,6 +96,11 @@ const learnLabel = computed(() => {
 
         <RouterLink v-else-if="hasLessons" class="btn btn--primary" :to="learnTo">
           <i class="fa-solid fa-play" aria-hidden="true"></i> {{ learnLabel }}
+        </RouterLink>
+
+        <!-- Curso todavía sin clases: igual se entra, ahí están las clases en vivo. -->
+        <RouterLink v-else-if="item.product.type === 'course'" class="btn btn--ghost" :to="learnTo">
+          {{ copy.enter }}
         </RouterLink>
       </div>
     </div>
