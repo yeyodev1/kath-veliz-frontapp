@@ -9,6 +9,12 @@
 //    variables, que le cambia la cara a TODO el sitio apenas carga (y el SPA
 //    no vuelve a recargar). Se devuelven esas variables a nuestros tokens.
 html:root {
+  // Además trae `:root { font-size: 13px; line-height: 24px }`: como todo el
+  // sitio mide en rem, encogía el 19% cada texto, botón y área táctil.
+  font-size: 100%;
+  line-height: normal;
+  letter-spacing: normal;
+
   --ppb-bs-body-font-family: #{$font-principal};
   --ppb-bs-body-font-size: #{$text-base};
   --ppb-bs-body-font-weight: 400;
