@@ -3,26 +3,27 @@ import { onMounted } from 'vue'
 import StateBlock from '@/components/student/StateBlock.vue'
 import CheckoutSummary from '@/components/checkout/CheckoutSummary.vue'
 import CheckoutCoupon from '@/components/checkout/CheckoutCoupon.vue'
-import CheckoutBuyer from '@/components/checkout/CheckoutBuyer.vue'
+import CheckoutIdentity from '@/components/checkout/CheckoutIdentity.vue'
+import CheckoutSteps from '@/components/checkout/CheckoutSteps.vue'
+import CheckoutTrust from '@/components/checkout/CheckoutTrust.vue'
 import CheckoutPayBox from '@/components/checkout/CheckoutPayBox.vue'
-import { useCheckout } from '@/composables/useCheckout'
+import { CHECKOUT_MAIN_ID, useCheckout } from '@/composables/useCheckout'
 import { studentCopy } from '@/config/student'
 import { formatCents } from '@/utils/money'
 
 const copy = studentCopy.checkout
 const {
   slug,
-  user,
+  identity,
   product,
   loading,
   loadError,
+  requestInvalid,
   purchasable,
   step,
   creating,
   error,
   alreadyOwned,
-  buyer,
-  buyerErrors,
   couponCode,
   coupon,
   couponError,
@@ -75,6 +76,20 @@ onMounted(load)
       </template>
     </StateBlock>
 
+    <StateBlock
+      v-else-if="requestInvalid"
+      icon="fa-link-slash"
+      tone="warning"
+      :title="copy.requestInvalid.title"
+      :text="copy.requestInvalid.text"
+    >
+      <template #actions>
+        <RouterLink class="btn btn--primary" :to="`/p/${slug}`">{{
+          copy.backToProduct
+        }}</RouterLink>
+      </template>
+    </StateBlock>
+
     <StateBlock v-else-if="!purchasable" icon="fa-store-slash" :title="copy.notAvailable">
       <template #actions>
         <RouterLink class="btn btn--primary" :to="`/p/${slug}`">{{
@@ -89,6 +104,7 @@ onMounted(load)
           <i class="fa-solid fa-lock" aria-hidden="true"></i> {{ copy.eyebrow }}
         </p>
         <h1 class="checkout__title">{{ copy.title }}</h1>
+        <CheckoutSteps :current="step === 'paying' ? 2 : 1" />
       </header>
 
       <div class="checkout__layout">
@@ -111,25 +127,42 @@ onMounted(load)
           </CheckoutSummary>
         </div>
 
-        <div class="checkout__main">
+        <div :id="CHECKOUT_MAIN_ID" class="checkout__main">
           <form v-if="step === 'form'" class="checkout__form" novalidate @submit.prevent="confirm">
-            <CheckoutBuyer
-              v-model="buyer"
-              :email="user?.email || ''"
-              :errors="buyerErrors"
+            <CheckoutIdentity
+              v-model="identity.form"
+              :mode="identity.mode.value"
+              :errors="identity.errors"
+              :user="identity.user.value"
+              :request="identity.request.value"
+              :mismatch="identity.mismatch.value"
+              :notice="identity.notice.value"
+              :failure="identity.failure.value"
               :disabled="creating"
+              @touch="identity.touch"
+              @switch="identity.switchTo"
+              @edit="identity.startEdit"
+              @switch-account="identity.switchAccount"
             />
 
             <p v-if="error" class="checkout__error" role="alert">
               <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> {{ error }}
             </p>
 
-            <button class="btn btn--primary checkout__submit" type="submit" :disabled="creating">
+            <button
+              class="btn btn--primary checkout__submit"
+              type="submit"
+              :disabled="creating || identity.mismatch.value"
+            >
               <i v-if="creating" class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
-              <template v-if="creating">{{ copy.creating }}</template>
+              <template v-if="creating">
+                {{ identity.busy.value ? copy.signingIn : copy.creating }}
+              </template>
               <template v-else-if="totalCents === 0">{{ copy.confirmFree }}</template>
               <template v-else>{{ copy.confirm }} · {{ formatCents(totalCents) }}</template>
             </button>
+
+            <CheckoutTrust :type="product.type" />
           </form>
 
           <CheckoutPayBox
@@ -153,15 +186,28 @@ onMounted(load)
   @include container(1040px);
   @include flex(column, stretch, flex-start, $space-md);
   flex: 1;
-  padding-block: $space-lg $space-xl;
+  padding-block: $space-md $space-xl;
+
+  @include from('md') {
+    padding-block: $space-lg $space-xl;
+  }
 
   &__eyebrow {
     @include eyebrow;
   }
 
+  &__head {
+    @include flex(column, stretch, flex-start, 0.85rem);
+  }
+
+  // En 360 px el título compite con el resumen y el formulario: va más contenido.
   &__title {
-    @include display($display-sm, 600);
-    margin-top: 0.4rem;
+    @include display($text-xl, 600);
+    margin-top: -0.45rem;
+
+    @include from('md') {
+      font-size: $display-sm;
+    }
   }
 
   // En móvil el resumen va primero (qué estoy pagando) y debajo el formulario;
@@ -190,6 +236,8 @@ onMounted(load)
   &__main {
     flex: 1;
     min-width: 0;
+    // Al pasar al pago se hace scroll hasta acá; que el header fijo no lo tape.
+    scroll-margin-top: calc(var(--header-h, 4.5rem) + 1rem);
   }
 
   &__form {
@@ -205,14 +253,12 @@ onMounted(load)
     background: $danger-bg;
   }
 
+  // Un solo botón principal por paso: ancho completo y 52 px de alto para el pulgar.
   &__submit {
     width: 100%;
+    min-height: 3.25rem;
     padding-block: 1rem;
-
-    @include from('sm') {
-      align-self: flex-start;
-      width: auto;
-    }
+    font-size: 1rem;
   }
 }
 </style>
