@@ -77,9 +77,18 @@ onMounted(load)
   &__list {
     @include flex-cards(280px, 1.25rem);
 
-    // Una o dos tarjetas no deben estirarse a todo el ancho.
-    > * {
-      max-width: 26rem;
+    // Columnas de ancho fijo desde tablet: una tarjeta huérfana en la última
+    // fila no debe estirarse más que las demás.
+    @include from('md') {
+      > * {
+        flex: 0 1 calc((100% - 1.25rem) / 2);
+      }
+    }
+
+    @include from('lg') {
+      > * {
+        flex: 0 1 calc((100% - 2.5rem) / 3);
+      }
     }
   }
 
