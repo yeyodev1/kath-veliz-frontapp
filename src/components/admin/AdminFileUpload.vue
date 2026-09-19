@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { adminUploadsService } from '@/services/adminUploads.service'
+import { adminUploadsService, UPLOAD_LIMITS_MB } from '@/services/adminUploads.service'
 import { useFileUpload } from '@/composables/admin/useFileUpload'
 import type { UploadedFile } from '@/types/admin'
 
@@ -13,7 +13,7 @@ const { uploading, progress, upload } = useFileUpload((picked, onProgress) =>
 )
 
 async function onPick(event: Event) {
-  const result = await upload(event, 100)
+  const result = await upload(event, UPLOAD_LIMITS_MB.file)
   if (result) file.value = result
 }
 </script>
