@@ -53,7 +53,11 @@ async function confirmDecision() {
     const note = decision.note.trim()
     if (decision.approve) await adminSalesService.approveRequest(decision.request.id, note)
     else await adminSalesService.rejectRequest(decision.request.id, note)
-    toast.success(decision.approve ? 'Solicitud aprobada. Ya salió el correo con el enlace de pago.' : 'Solicitud rechazada.')
+    toast.success(
+      decision.approve
+        ? 'Solicitud aprobada. Ya salió el correo con el enlace de pago.'
+        : 'Solicitud rechazada.',
+    )
     decision.open = false
     await load()
   } catch (err) {
