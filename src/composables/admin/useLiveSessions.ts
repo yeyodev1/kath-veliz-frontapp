@@ -30,7 +30,10 @@ export function useLiveSessions() {
   // Las lecciones del curso, para elegir cuál es la grabación de la clase.
   const lessonOptions = computed(() =>
     modules.value.flatMap((module) =>
-      module.lessons.map((lesson) => ({ id: lesson.id, label: `${module.title} — ${lesson.title}` })),
+      module.lessons.map((lesson) => ({
+        id: lesson.id,
+        label: `${module.title} — ${lesson.title}`,
+      })),
     ),
   )
 
@@ -69,7 +72,11 @@ export function useLiveSessions() {
     form.description = session?.description || ''
     form.startsAt = isoToDateTimeInput(session?.startsAt)
     form.meetUrl = session?.meetUrl || ''
-    form.recordingLesson = recording ? (typeof recording === 'string' ? recording : recording.id) : ''
+    form.recordingLesson = recording
+      ? typeof recording === 'string'
+        ? recording
+        : recording.id
+      : ''
     form.open = true
   }
 
@@ -109,5 +116,19 @@ export function useLiveSessions() {
     else toast.info('No se envió ningún correo: este curso no tiene alumnos con acceso vigente.')
   }
 
-  return { productId, sessions, loading, error, saving, form, lessonOptions, canSave, load, open, save, remove, notify }
+  return {
+    productId,
+    sessions,
+    loading,
+    error,
+    saving,
+    form,
+    lessonOptions,
+    canSave,
+    load,
+    open,
+    save,
+    remove,
+    notify,
+  }
 }
