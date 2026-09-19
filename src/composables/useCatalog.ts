@@ -10,7 +10,8 @@ import type { ApiError } from '@/types'
  */
 export function useCatalog(types?: ProductType[]) {
   const products = ref<ProductCard[]>([])
-  const loading = ref(false)
+  // Arranca en true: las vistas cargan al montarse y así no parpadea el estado vacío.
+  const loading = ref(true)
   const error = ref('')
   const loaded = ref(false)
 
