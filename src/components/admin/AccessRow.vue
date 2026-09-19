@@ -35,7 +35,9 @@ const status = computed(() => accessStatus(props.access))
     <AdminDatum label="Vence">
       {{ access.expiresAt ? formatDateEc(access.expiresAt) : adminCopy.access.neverLabel }}
     </AdminDatum>
-    <AdminDatum v-if="access.revokedAt" label="Revocado el">{{ formatDateEc(access.revokedAt) }}</AdminDatum>
+    <AdminDatum v-if="access.revokedAt" label="Revocado el">{{
+      formatDateEc(access.revokedAt)
+    }}</AdminDatum>
     <AdminDatum v-if="access.note" label="Nota" wide>{{ access.note }}</AdminDatum>
 
     <template #actions>
@@ -43,7 +45,11 @@ const status = computed(() => accessStatus(props.access))
         <i class="fa-regular fa-calendar"></i>
         Editar vencimiento
       </button>
-      <button v-if="status !== 'revocado'" class="btn btn--danger adm-btn-sm" @click="emit('revoke', access)">
+      <button
+        v-if="status !== 'revocado'"
+        class="btn btn--danger adm-btn-sm"
+        @click="emit('revoke', access)"
+      >
         <i class="fa-solid fa-ban"></i>
         Revocar
       </button>
