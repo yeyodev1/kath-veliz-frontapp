@@ -1,0 +1,208 @@
+// Clases compartidas del panel. Se importa UNA vez desde AdminLayout, así que
+// puede emitir CSS. Todo con flex; los objetivos táctiles miden al menos 44 px.
+
+.adm-page {
+  @include flex(column, stretch, flex-start, $space-md);
+  width: 100%;
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+// Lista de registros: tarjetas apiladas.
+.adm-list {
+  @include flex(column, stretch, flex-start, 0.75rem);
+}
+
+.adm-card {
+  @include card;
+  padding: 1.1rem;
+
+  @include from('md') {
+    padding: 1.5rem;
+  }
+}
+
+.adm-section-title {
+  font-family: $font-principal;
+  font-size: $text-base;
+  font-weight: 700;
+  color: $ink;
+}
+
+.adm-muted {
+  font-size: $text-sm;
+  color: $ink-muted;
+}
+
+.adm-form {
+  @include flex(column, stretch, flex-start, 1rem);
+
+  // 16 px evita que iOS haga zoom al enfocar un campo.
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+    min-height: 46px;
+  }
+
+  textarea {
+    min-height: 96px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+}
+
+.adm-field {
+  @include flex(column, stretch, flex-start, 0);
+  min-width: 0;
+
+  &__hint {
+    font-size: $text-xs;
+    color: $ink-muted;
+    margin-top: 0.35rem;
+  }
+
+  &__error {
+    font-size: $text-xs;
+    color: $danger;
+    margin-top: 0.35rem;
+  }
+}
+
+// Campos lado a lado cuando caben; en 360 px se apilan solos.
+.adm-row {
+  @include flex-cards(200px, 1rem);
+}
+
+.adm-toolbar {
+  @include flex-cards(160px, 0.75rem);
+
+  input,
+  select {
+    font-size: 16px;
+    min-height: 46px;
+  }
+}
+
+.adm-actions {
+  @include flex(row, center, flex-start, 0.6rem);
+  flex-wrap: wrap;
+}
+
+.adm-check,
+.adm-choice {
+  @include flex(row, flex-start, flex-start, 0.75rem);
+  min-height: 44px;
+  margin: 0;
+  cursor: pointer;
+  font-size: $text-sm;
+  color: $ink;
+
+  input {
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    min-height: 0;
+    padding: 0;
+    margin-top: 0.1rem;
+    accent-color: $accent;
+  }
+
+  small {
+    display: block;
+    font-size: $text-xs;
+    font-weight: 400;
+    color: $ink-muted;
+  }
+}
+
+.adm-check {
+  align-items: center;
+}
+
+.adm-choice {
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  padding: 0.85rem;
+  background: $surface;
+  font-weight: 600;
+  @include transition(border-color);
+
+  &--active {
+    border-color: $accent;
+    background: $accent-soft;
+  }
+}
+
+.adm-btn-sm {
+  padding: 0.55rem 1.1rem;
+  min-height: 44px;
+  font-size: 0.8rem;
+}
+
+.adm-btn-block {
+  width: 100%;
+  min-height: 48px;
+}
+
+.adm-icon-btn {
+  @include flex(row, center, center);
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: $radius-pill;
+  border: 1px solid $line;
+  background: $surface;
+  color: $ink-soft;
+  @include transition;
+
+  &:hover {
+    border-color: $ink;
+    color: $ink;
+  }
+
+  &--danger:hover {
+    border-color: $danger;
+    color: $danger;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+}
+
+.adm-progress {
+  width: 100%;
+  height: 10px;
+  border-radius: $radius-pill;
+  background: $sand;
+  overflow: hidden;
+
+  &__bar {
+    height: 100%;
+    background: $accent;
+    border-radius: $radius-pill;
+    transition: width 0.3s ease;
+  }
+}
+
+.adm-tabs {
+  @include flex(row, stretch, flex-start, 0.4rem);
+  border-bottom: 1px solid $line;
+
+  &__tab {
+    min-height: 48px;
+    padding: 0 1rem;
+    font-size: $text-sm;
+    font-weight: 600;
+    color: $ink-muted;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+
+    &--active {
+      color: $accent-deep;
+      border-bottom-color: $accent;
+    }
+  }
+}
