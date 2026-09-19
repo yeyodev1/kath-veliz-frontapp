@@ -12,7 +12,11 @@ class AdminUploadsService extends AdminAPIBase {
   }
 
   /** `isPrivate` = descargable de pago: queda en Cloudinary como archivo autenticado. */
-  file(file: File, isPrivate = false, onProgress?: (percent: number) => void): Promise<UploadedFile> {
+  file(
+    file: File,
+    isPrivate = false,
+    onProgress?: (percent: number) => void,
+  ): Promise<UploadedFile> {
     const body = new FormData()
     // El campo de texto va antes del archivo: multer lo lee en orden.
     if (isPrivate) body.append('private', 'true')
