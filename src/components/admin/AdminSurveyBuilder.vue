@@ -26,7 +26,13 @@ function move(index: number, step: number) {
       <div class="survey__head">
         <strong>Pregunta {{ index + 1 }}</strong>
         <div class="survey__tools">
-          <button type="button" class="adm-icon-btn" :disabled="index === 0" aria-label="Subir pregunta" @click="move(index, -1)">
+          <button
+            type="button"
+            class="adm-icon-btn"
+            :disabled="index === 0"
+            aria-label="Subir pregunta"
+            @click="move(index, -1)"
+          >
             <i class="fa-solid fa-arrow-up"></i>
           </button>
           <button
@@ -38,16 +44,28 @@ function move(index: number, step: number) {
           >
             <i class="fa-solid fa-arrow-down"></i>
           </button>
-          <button type="button" class="adm-icon-btn adm-icon-btn--danger" aria-label="Quitar pregunta" @click="questions.splice(index, 1)">
+          <button
+            type="button"
+            class="adm-icon-btn adm-icon-btn--danger"
+            aria-label="Quitar pregunta"
+            @click="questions.splice(index, 1)"
+          >
             <i class="fa-solid fa-trash"></i>
           </button>
         </div>
       </div>
 
-      <input v-model="question.label" type="text" placeholder="Ej.: ¿Cuál es tu meta financiera este año?" :aria-label="`Texto de la pregunta ${index + 1}`" />
+      <input
+        v-model="question.label"
+        type="text"
+        placeholder="Ej.: ¿Cuál es tu meta financiera este año?"
+        :aria-label="`Texto de la pregunta ${index + 1}`"
+      />
 
       <select v-model="question.type" :aria-label="`Tipo de respuesta ${index + 1}`">
-        <option v-for="(label, value) in surveyTypeLabels" :key="value" :value="value">{{ label }}</option>
+        <option v-for="(label, value) in surveyTypeLabels" :key="value" :value="value">
+          {{ label }}
+        </option>
       </select>
 
       <AdminStringList
