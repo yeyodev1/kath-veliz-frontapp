@@ -163,9 +163,22 @@ export function useProductContent(productId: () => string) {
   }
 
   return {
-    modules, loading, error, saving, reordering, moduleForm, lessonForm,
-    load, moveModule, moveLesson, openModule, saveModule, removeModule,
-    openLesson, saveLesson, removeLesson,
+    modules,
+    loading,
+    error,
+    saving,
+    reordering,
+    moduleForm,
+    lessonForm,
+    load,
+    moveModule,
+    moveLesson,
+    openModule,
+    saveModule,
+    removeModule,
+    openLesson,
+    saveLesson,
+    removeLesson,
   }
 }
 
