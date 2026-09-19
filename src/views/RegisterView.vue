@@ -104,7 +104,9 @@ async function submit() {
 
       <p class="form__switch">
         {{ copy.hasAccount }}
-        <RouterLink :to="{ name: 'Login', query: nextQuery }" class="link">{{ copy.login }}</RouterLink>
+        <RouterLink :to="{ name: 'Login', query: nextQuery }" class="link">{{
+          copy.login
+        }}</RouterLink>
       </p>
     </form>
   </AuthShell>
